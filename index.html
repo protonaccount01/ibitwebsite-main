@@ -1,108 +1,143 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ইনস্টিটিউট অফ টেকনোলজি</title>
+    <title>IBIT - Islami Bank Institute of Technology, Sylhet</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
 
-    <!-- হেডার -->
-    <header class="bg-indigo-900 text-white shadow-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+    <!-- Header -->
+    <div class="bg-white py-4 px-6 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center space-y-3 md:space-y-0 md:space-x-4">
+            <img src="https://raw.githubusercontent.com/github/explore/main/topics/javascript/javascript.png" 
+                 alt="IBIT Logo" class="w-16 h-16 object-contain">
             
-            <!-- লোগো (GitHub Repo থেকে ছবি ব্যবহার করা যাবে) -->
-            <div class="flex items-center space-x-3">
-                <img src="https://raw.githubusercontent.com/github/explore/main/topics/javascript/javascript.png" 
-                     alt="Logo" class="w-10 h-10 rounded-full">
-                <span class="text-xl font-bold">আইটি ইনস্টিটিউট</span>
+            <div class="text-center md:text-left">
+                <h1 class="text-xl md:text-2xl font-black text-slate-800 tracking-wide uppercase">
+                    IBIT-ISLAMI BANK INSTITUTE OF TECHNOLOGY, SYLHET
+                </h1>
+                <p class="text-xs font-semibold text-slate-500 mt-0.5">
+                    ESTD: 2006 &nbsp;|&nbsp; Nawa Corner (3rd, 4th & 5th Floor), Humayun Rashid Chattar, Sylhet
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="bg-[#1f2937] text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+            
+            <div class="hidden md:flex items-center space-x-1 text-sm font-bold tracking-wider">
+                <a href="index.html" class="px-4 py-3.5 hover:bg-[#111827] transition">HOME</a>
+                <a href="pages/about.html" class="px-4 py-3.5 hover:bg-[#111827] transition">ABOUT US</a>
+
+                <!-- ADMINISTRATION Dropdown -->
+                <div class="relative group">
+                    <button class="px-4 py-3.5 hover:bg-[#111827] flex items-center space-x-1 transition focus:outline-none">
+                        <span>ADMINISTRATION</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <!-- Exact Submenu Items -->
+                    <div class="absolute left-0 w-56 bg-[#001340] text-white shadow-2xl py-2 hidden group-hover:block border-t-2 border-blue-500">
+                        <a href="pages/administration/faculty-members.html" class="block px-4 py-2.5 text-xs font-bold hover:bg-[#001f66] uppercase">FACULTY MEMBERS</a>
+                        <a href="pages/administration/stuff.html" class="block px-4 py-2.5 text-xs font-bold hover:bg-[#001f66] uppercase">STUFF</a>
+                    </div>
+                </div>
+
+                <a href="pages/contact.html" class="px-4 py-3.5 hover:bg-[#111827] transition">CONTACT</a>
+
+                <!-- DEPARTMENTS Dropdown -->
+                <div class="relative group">
+                    <button class="px-4 py-3.5 hover:bg-[#111827] flex items-center space-x-1 transition focus:outline-none">
+                        <span>DEPARTMENTS</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <!-- Exact Submenu Items -->
+                    <div class="absolute left-0 w-64 bg-[#001340] text-white shadow-2xl py-2 hidden group-hover:block border-t-2 border-blue-500">
+                        <a href="pages/departments/computer-science-and-technology.html" class="block px-4 py-2.5 text-xs font-bold hover:bg-[#001f66] uppercase">COMPUTER SCIENCE & TECHNOLOGY</a>
+                        <a href="pages/departments/electrical-technology.html" class="block px-4 py-2.5 text-xs font-bold hover:bg-[#001f66] uppercase">ELECTRICAL TECHNOLOGY</a>
+                        <a href="pages/departments/civil-technology.html" class="block px-4 py-2.5 text-xs font-bold hover:bg-[#001f66] uppercase">CIVIL TECHNOLOGY</a>
+                    </div>
+                </div>
+
+                <a href="pages/notice.html" class="px-4 py-3.5 hover:bg-[#111827] text-yellow-400 transition font-bold">NOTICE</a>
             </div>
 
-            <!-- ডেস্কটপ মেনু -->
-            <nav class="hidden md:flex space-x-6 text-sm font-medium">
-                <a href="index.html" class="hover:text-indigo-200 transition">হোম</a>
-                <a href="#about" class="hover:text-indigo-200 transition">আমাদের সম্পর্কে</a>
-                <a href="notice.html" class="hover:text-indigo-200 transition text-yellow-400">নোটিশ বোর্ড</a>
-                <a href="#contact" class="hover:text-indigo-200 transition">যোগাযোগ</a>
-            </nav>
-
-            <!-- মোবাইল মেনু বাটন -->
-            <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
+            <!-- Mobile Menu Button -->
+            <button id="mobile-btn" class="md:hidden py-3 text-white font-bold">MENU ☰</button>
         </div>
 
-        <!-- মোবাইল ড্রপডাউন মেনু -->
-        <div id="mobile-menu" class="hidden md:hidden bg-indigo-800 px-4 py-3 space-y-2 text-sm">
-            <a href="index.html" class="block">হোম</a>
-            <a href="#about" class="block">আমাদের সম্পর্কে</a>
-            <a href="notice.html" class="block text-yellow-400 font-bold">নোটিশ বোর্ড</a>
-            <a href="#contact" class="block">যোগাযোগ</a>
+        <!-- Mobile Nav links -->
+        <div id="mobile-menu" class="hidden md:hidden bg-[#111827] px-4 py-3 space-y-2 text-xs font-bold">
+            <a href="index.html" class="block py-1">HOME</a>
+            <a href="pages/about.html" class="block py-1">ABOUT US</a>
+            <p class="text-slate-400 pt-2 border-t border-slate-700">ADMINISTRATION</p>
+            <a href="pages/administration/faculty-members.html" class="block pl-3 py-1 text-slate-300">- FACULTY MEMBERS</a>
+            <a href="pages/administration/stuff.html" class="block pl-3 py-1 text-slate-300">- STUFF</a>
+            <a href="pages/contact.html" class="block py-1 border-t border-slate-700">CONTACT</a>
+            <p class="text-slate-400 pt-2 border-t border-slate-700">DEPARTMENTS</p>
+            <a href="pages/departments/computer-science-and-technology.html" class="block pl-3 py-1 text-slate-300">- COMPUTER SCIENCE & TECHNOLOGY</a>
+            <a href="pages/departments/electrical-technology.html" class="block pl-3 py-1 text-slate-300">- ELECTRICAL TECHNOLOGY</a>
+            <a href="pages/departments/civil-technology.html" class="block pl-3 py-1 text-slate-300">- CIVIL TECHNOLOGY</a>
+            <a href="pages/notice.html" class="block py-2 text-yellow-400 border-t border-slate-700">NOTICE</a>
         </div>
-    </header>
+    </nav>
 
-    <!-- হিরো সেকশন -->
-    <section class="bg-indigo-700 text-white py-12 px-4 text-center">
-        <h1 class="text-3xl md:text-5xl font-extrabold mb-3">ভবিষ্যতের পপ্রতিষ্ঠান</h1>
-        <p class="text-indigo-100 max-w-xl mx-auto">আমাদের প্র্যাকটিক্যাল কোর্সের মাধ্যমে নিজেকে স্বাবলম্বী করুন।</p>
-    </section>
+    <!-- Banner -->
+    <div class="w-full max-w-7xl mx-auto px-0 md:px-4 mt-2">
+        <img src="https://raw.githubusercontent.com/github/explore/main/topics/html/html.png" 
+             alt="Campus Banner" class="w-full h-[300px] md:h-[450px] object-cover">
+    </div>
 
-    <!-- মেইন কন্টেন্ট -->
-    <main class="max-w-7xl mx-auto px-4 py-8 flex-grow grid grid-cols-1 md:grid-cols-3 gap-8">
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-8 flex-grow grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
         <div class="md:col-span-2 bg-white p-6 rounded-lg shadow-sm border border-slate-200">
-            <h2 class="text-2xl font-bold mb-4 text-indigo-900 border-b pb-2">আমাদের সম্পর্কে</h2>
-            <img src="https://raw.githubusercontent.com/github/explore/main/topics/html/html.png" 
-                 alt="Campus" class="w-full h-52 object-cover rounded-md mb-4">
-            <p class="text-slate-600 leading-relaxed">
-                আমাদের ইনস্টিটিউটে স্বাগতম। আমরা সেরা ইন্সট্রাক্টর এবং মানসম্মত শিক্ষা নিশ্চিত করতে প্রতিশ্রুতিবদ্ধ।
+            <h2 class="text-xl font-bold mb-3 text-slate-800 border-b pb-2">Welcome to IBIT Sylhet</h2>
+            <p class="text-slate-600 leading-relaxed text-sm">
+                Islami Bank Institute of Technology (IBIT), Sylhet offers diploma in engineering courses with state-of-the-art laboratory facilities.
             </p>
         </div>
 
-        <!-- সাইডবার নোটিশ প্রিভিউ -->
-        <aside class="bg-white p-6 rounded-lg shadow-sm border border-slate-200 border-l-4 border-l-indigo-600">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="font-bold text-slate-800">সর্বশেষ নোটিশ</h3>
-                <a href="notice.html" class="text-xs text-indigo-600 font-semibold hover:underline">সব দেখুন →</a>
+        <aside class="bg-white p-6 rounded-lg shadow-sm border border-slate-200 border-l-4 border-l-[#1f2937]">
+            <div class="flex justify-between items-center mb-4 border-b pb-2">
+                <h3 class="font-bold text-slate-800 text-sm uppercase">Latest Notices</h3>
+                <a href="pages/notice.html" class="text-xs text-indigo-600 font-bold hover:underline">View All →</a>
             </div>
             <div id="latest-notices" class="text-sm space-y-3">
-                <p class="text-slate-400">লোডিং...</p>
+                <p class="text-slate-400 text-xs">Loading notices...</p>
             </div>
         </aside>
     </main>
 
-    <!-- ফুটার -->
-    <footer class="bg-slate-900 text-slate-400 text-center py-4 text-sm mt-auto">
-        <p>© ২০২৬ ইনস্টিটিউট অফ টেকনোলজি</p>
+    <footer class="bg-[#111827] text-slate-400 text-center py-4 text-xs mt-auto">
+        <p>© 2026 IBIT-Islami Bank Institute of Technology, Sylhet. All Rights Reserved.</p>
     </footer>
 
     <script>
-        // মোবাইল মেনু টগল
-        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+        document.getElementById('mobile-btn').addEventListener('click', () => {
             document.getElementById('mobile-menu').classList.toggle('hidden');
         });
 
-        // কুইক সাইডবার নোটিশ ফেচ
         fetch('/api/get-notices')
             .then(res => res.json())
             .then(data => {
                 const container = document.getElementById('latest-notices');
                 container.innerHTML = '';
-                if(data.length === 0) {
-                    container.innerHTML = '<p class="text-slate-400">কোনো নোটিশ নেই</p>';
+                if(!data || data.length === 0) {
+                    container.innerHTML = '<p class="text-slate-400 text-xs">No notices available.</p>';
                     return;
                 }
-                data.slice(0, 3).forEach(n => {
+                data.slice(0, 4).forEach(n => {
                     container.innerHTML += `
                         <div class="border-b pb-2">
-                            <span class="text-[10px] text-slate-400 block">${new Date(n.created_at).toLocaleDateString('bn-BD')}</span>
-                            <a href="notice.html" class="text-slate-700 font-medium hover:text-indigo-600 line-clamp-1">${n.title}</a>
+                            <span class="text-[10px] text-slate-400 block">${new Date(n.created_at).toLocaleDateString()}</span>
+                            <a href="pages/notice.html" class="text-slate-700 font-semibold hover:text-indigo-600 line-clamp-1 text-xs">${n.title}</a>
                         </div>`;
                 });
             }).catch(() => {
-                document.getElementById('latest-notices').innerHTML = '<p class="text-red-400">নোটিশ লোড করা যায়নি</p>';
+                document.getElementById('latest-notices').innerHTML = '<p class="text-red-400 text-xs">Unable to load notices.</p>';
             });
     </script>
 </body>
