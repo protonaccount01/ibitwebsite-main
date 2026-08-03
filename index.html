@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ইনস্টিটিউট অফ টেকনোলজি</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+
+    <!-- হেডার -->
+    <header class="bg-indigo-900 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            
+            <!-- লোগো (GitHub Repo থেকে ছবি ব্যবহার করা যাবে) -->
+            <div class="flex items-center space-x-3">
+                <img src="https://raw.githubusercontent.com/github/explore/main/topics/javascript/javascript.png" 
+                     alt="Logo" class="w-10 h-10 rounded-full">
+                <span class="text-xl font-bold">আইটি ইনস্টিটিউট</span>
+            </div>
+
+            <!-- ডেস্কটপ মেনু -->
+            <nav class="hidden md:flex space-x-6 text-sm font-medium">
+                <a href="index.html" class="hover:text-indigo-200 transition">হোম</a>
+                <a href="#about" class="hover:text-indigo-200 transition">আমাদের সম্পর্কে</a>
+                <a href="notice.html" class="hover:text-indigo-200 transition text-yellow-400">নোটিশ বোর্ড</a>
+                <a href="#contact" class="hover:text-indigo-200 transition">যোগাযোগ</a>
+            </nav>
+
+            <!-- মোবাইল মেনু বাটন -->
+            <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- মোবাইল ড্রপডাউন মেনু -->
+        <div id="mobile-menu" class="hidden md:hidden bg-indigo-800 px-4 py-3 space-y-2 text-sm">
+            <a href="index.html" class="block">হোম</a>
+            <a href="#about" class="block">আমাদের সম্পর্কে</a>
+            <a href="notice.html" class="block text-yellow-400 font-bold">নোটিশ বোর্ড</a>
+            <a href="#contact" class="block">যোগাযোগ</a>
+        </div>
+    </header>
+
+    <!-- হিরো সেকশন -->
+    <section class="bg-indigo-700 text-white py-12 px-4 text-center">
+        <h1 class="text-3xl md:text-5xl font-extrabold mb-3">ভবিষ্যতের প্রযুক্তি গড়ার প্রতিষ্ঠান</h1>
+        <p class="text-indigo-100 max-w-xl mx-auto">আমাদের প্র্যাকটিক্যাল কোর্সের মাধ্যমে নিজেকে স্বাবলম্বী করুন।</p>
+    </section>
+
+    <!-- মেইন কন্টেন্ট -->
+    <main class="max-w-7xl mx-auto px-4 py-8 flex-grow grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="md:col-span-2 bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+            <h2 class="text-2xl font-bold mb-4 text-indigo-900 border-b pb-2">আমাদের সম্পর্কে</h2>
+            <img src="https://raw.githubusercontent.com/github/explore/main/topics/html/html.png" 
+                 alt="Campus" class="w-full h-52 object-cover rounded-md mb-4">
+            <p class="text-slate-600 leading-relaxed">
+                আমাদের ইনস্টিটিউটে স্বাগতম। আমরা সেরা ইন্সট্রাক্টর এবং মানসম্মত শিক্ষা নিশ্চিত করতে প্রতিশ্রুতিবদ্ধ।
+            </p>
+        </div>
+
+        <!-- সাইডবার নোটিশ প্রিভিউ -->
+        <aside class="bg-white p-6 rounded-lg shadow-sm border border-slate-200 border-l-4 border-l-indigo-600">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-slate-800">সর্বশেষ নোটিশ</h3>
+                <a href="notice.html" class="text-xs text-indigo-600 font-semibold hover:underline">সব দেখুন →</a>
+            </div>
+            <div id="latest-notices" class="text-sm space-y-3">
+                <p class="text-slate-400">লোডিং...</p>
+            </div>
+        </aside>
+    </main>
+
+    <!-- ফুটার -->
+    <footer class="bg-slate-900 text-slate-400 text-center py-4 text-sm mt-auto">
+        <p>© ২০২৬ ইনস্টিটিউট অফ টেকনোলজি</p>
+    </footer>
+
+    <script>
+        // মোবাইল মেনু টগল
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // কুইক সাইডবার নোটিশ ফেচ
+        fetch('/api/get-notices')
+            .then(res => res.json())
+            .then(data => {
+                const container = document.getElementById('latest-notices');
+                container.innerHTML = '';
+                if(data.length === 0) {
+                    container.innerHTML = '<p class="text-slate-400">কোনো নোটিশ নেই</p>';
+                    return;
+                }
+                data.slice(0, 3).forEach(n => {
+                    container.innerHTML += `
+                        <div class="border-b pb-2">
+                            <span class="text-[10px] text-slate-400 block">${new Date(n.created_at).toLocaleDateString('bn-BD')}</span>
+                            <a href="notice.html" class="text-slate-700 font-medium hover:text-indigo-600 line-clamp-1">${n.title}</a>
+                        </div>`;
+                });
+            }).catch(() => {
+                document.getElementById('latest-notices').innerHTML = '<p class="text-red-400">নোটিশ লোড করা যায়নি</p>';
+            });
+    </script>
+</body>
+</html>
