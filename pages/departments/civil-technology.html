@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Civil Technology - IBIT Sylhet</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpeg" href="../../assets/logo.jpeg">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+
+    <!-- Header -->
+    <div class="bg-white py-4 px-6 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center space-y-3 md:space-y-0 md:space-x-4">
+            <!-- Circular Logo with relative path to root -->
+            <img src="../../assets/logo.jpeg" 
+                 alt="IBIT Logo" class="w-16 h-16 rounded-full object-cover shadow-sm">
+            <div class="text-center md:text-left">
+                <h1 class="text-xl md:text-2xl font-black text-slate-800 tracking-wide uppercase">
+                    IBIT-ISLAMI BANK INSTITUTE OF TECHNOLOGY, SYLHET
+                </h1>
+                <p class="text-xs font-semibold text-slate-500 mt-0.5">
+                    ESTD: 2006 &nbsp;|&nbsp; Nawa Corner (3rd, 4th & 5th Floor), Humayun Rashid Chattar, Sylhet
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="bg-[#1f2937] text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+            <div class="hidden md:flex items-center space-x-1 text-sm font-bold tracking-wider">
+                <a href="../../index.html" class="px-4 py-3.5 hover:bg-[#111827] transition">HOME</a>
+                <a href="../about.html" class="px-4 py-3.5 hover:bg-[#111827] transition">ABOUT US</a>
+
+                <!-- ADMINISTRATION Dropdown -->
+                <div class="relative group">
+                    <button class="px-4 py-3.5 hover:bg-[#111827] flex items-center space-x-1 transition focus:outline-none">
+                        <span>ADMINISTRATION</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="absolute left-0 w-56 bg-[#001340] text-white shadow-2xl py-2 hidden group-hover:block border-t-2 border-blue-500">
+                        <a href="../administration/faculty-members.html" class="block px-4 py-2.5 text-xs font-bold hover:bg-[#001f66] uppercase">FACULTY MEMBERS</a>
+                        <a href="../administration/stuff.html" class="block px-4 py-2.5 text-xs font-bold hover:bg-[#001f66] uppercase">STUFF</a>
+                    </div>
+                </div>
+
+                <a href="../contact.html" class="px-4 py-3.5 hover:bg-[#111827] transition">CONTACT</a>
+
+                <!-- DEPARTMENTS Dropdown -->
+                <div class="relative group">
+                    <button class="px-4 py-3.5 hover:bg-[#111827] bg-[#111827] flex items-center space-x-1 transition focus:outline-none">
+                        <span>DEPARTMENTS</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="absolute left-0 w-64 bg-[#001340] text-white shadow-2xl py-2 hidden group-hover:block border-t-2 border-blue-500">
+                        <a href="computer-science-and-technology.html" class="block px-4 py-2.5 text-xs font-bold hover:bg-[#001f66] uppercase">COMPUTER SCIENCE & TECHNOLOGY</a>
+                        <a href="electrical-technology.html" class="block px-4 py-2.5 text-xs font-bold hover:bg-[#001f66] uppercase">ELECTRICAL TECHNOLOGY</a>
+                        <a href="civil-technology.html" class="block px-4 py-2.5 text-xs font-bold text-blue-400 hover:bg-[#001f66] uppercase">CIVIL TECHNOLOGY</a>
+                    </div>
+                </div>
+
+                <a href="../notice.html" class="px-4 py-3.5 hover:bg-[#111827] text-yellow-400 transition font-bold">NOTICE</a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-btn" class="md:hidden py-3 text-white font-bold">MENU ☰</button>
+        </div>
+
+        <!-- Mobile Nav links -->
+        <div id="mobile-menu" class="hidden md:hidden bg-[#111827] px-4 py-3 space-y-2 text-xs font-bold">
+            <a href="../../index.html" class="block py-1">HOME</a>
+            <a href="../about.html" class="block py-1">ABOUT US</a>
+            <p class="text-slate-400 pt-2 border-t border-slate-700">ADMINISTRATION</p>
+            <a href="../administration/faculty-members.html" class="block pl-3 py-1 text-slate-300">- FACULTY MEMBERS</a>
+            <a href="../administration/stuff.html" class="block pl-3 py-1 text-slate-300">- STUFF</a>
+            <a href="../contact.html" class="block py-1 border-t border-slate-700">CONTACT</a>
+            <p class="text-slate-400 pt-2 border-t border-slate-700">DEPARTMENTS</p>
+            <a href="computer-science-and-technology.html" class="block pl-3 py-1 text-slate-300">- COMPUTER SCIENCE & TECHNOLOGY</a>
+            <a href="electrical-technology.html" class="block pl-3 py-1 text-slate-300">- ELECTRICAL TECHNOLOGY</a>
+            <a href="civil-technology.html" class="block pl-3 py-1 text-blue-400">- CIVIL TECHNOLOGY</a>
+            <a href="../notice.html" class="block py-2 text-yellow-400 border-t border-slate-700">NOTICE</a>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="w-full flex-grow py-12 bg-white">
+        <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 1000px; margin: 0 auto; padding: 0 20px; box-sizing: border-box;">
+
+            <!-- Page Heading -->
+            <h1 style="color: #1a0b5e; font-size: 28px; font-weight: 800; text-transform: uppercase; text-align: center; margin-bottom: 30px; border-bottom: 2px solid #1a0b5e; padding-bottom: 10px;">
+                Diploma in Civil Engineering
+            </h1>
+
+            <!-- Block 1: Introduction -->
+            <p style="color: #333; font-size: 15.5px; line-height: 1.7; text-align: justify; margin-bottom: 25px;">
+                Diploma in Civil Engineering can pave the way for a promising career. Civil engineering, a vital branch of modern engineering and technology, primarily focuses on planning, design, and structural execution. This field encompasses a wide range of challenging projects, including supervising public works design and construction activities such as roads, bridges, tunnels, buildings, airports, dams, sewerage systems, ports, and more. A Civil Engineer plays a pivotal role in the planning, implementation, and maintenance of projects. Individuals with a Diploma in Civil Engineering possess both technical expertise and administrative skills necessary for the job. They can hold positions such as site engineer/manager, design consultant, researcher, educator, etc., across various construction projects in both public and private sectors. Moreover, they have opportunities to work as Deputy Assistant Engineers in government, semi-government, and autonomous organizations like LGED, PWD, R&H, BR, BBA, MES, EED, WASA, DESCO, DPDC, WDB, BADC, Bangladesh Airlines, Telecom Industry, as well as public and private housing and development projects.
+            </p>
+
+            <!-- Block 2: Graph/Image Section (No human, Civil related) -->
+            <div style="margin: 35px 0; text-align: center;">
+                <img src="../../assets/departments/civil-graph.jpeg" alt="Civil Engineering Structures and Graphs" style="width: 100%; max-width: 800px; height: auto; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: inline-block;">
+            </div>
+
+            <!-- Block 3 & 4: Career Prospects -->
+            <div style="background: #f8f9fa; padding: 30px; border-radius: 8px; border-left: 4px solid #1a0b5e; margin-bottom: 30px;">
+                <h2 style="color: #1a0b5e; font-size: 22px; font-weight: 800; text-transform: uppercase; margin-bottom: 15px;">
+                    Career Prospects
+                </h2>
+                <p style="color: #444; font-size: 15px; margin-bottom: 15px;">
+                    A Diploma in Civil Engineering opens up a wide range of career prospects in both public and private sectors. Graduates with this qualification can pursue various roles such as:
+                </p>
+                <ul style="list-style: none; padding: 0; margin: 0; color: #333; font-size: 15px; line-height: 1.6;">
+                    <li style="margin-bottom: 10px; display: flex; align-items: flex-start;">
+                        <span style="color: #1a0b5e; font-weight: bold; margin-right: 8px;">✓</span> 
+                        <div><strong>Site Engineer/Manager:</strong> Responsible for overseeing construction activities on-site, ensuring compliance with design specifications, and managing project timelines and resources.</div>
+                    </li>
+                    <li style="margin-bottom: 10px; display: flex; align-items: flex-start;">
+                        <span style="color: #1a0b5e; font-weight: bold; margin-right: 8px;">✓</span> 
+                        <div><strong>Design Consultant:</strong> Involved in the planning and design phase of construction projects, including creating blueprints, structural analysis, and ensuring building code compliance.</div>
+                    </li>
+                    <li style="margin-bottom: 10px; display: flex; align-items: flex-start;">
+                        <span style="color: #1a0b5e; font-weight: bold; margin-right: 8px;">✓</span> 
+                        <div><strong>Deputy Assistant Engineer:</strong> Working in government, semi-government, or autonomous organizations in roles related to infrastructure development, urban planning, and public works projects.</div>
+                    </li>
+                    <li style="margin-bottom: 10px; display: flex; align-items: flex-start;">
+                        <span style="color: #1a0b5e; font-weight: bold; margin-right: 8px;">✓</span> 
+                        <div><strong>Construction Project Manager:</strong> Overseeing the entire construction project, including budgeting, scheduling, procurement, and coordination with various stakeholders.</div>
+                    </li>
+                    <li style="margin-bottom: 10px; display: flex; align-items: flex-start;">
+                        <span style="color: #1a0b5e; font-weight: bold; margin-right: 8px;">✓</span> 
+                        <div><strong>Quality Control Engineer:</strong> Ensuring the quality and safety of construction materials and processes through testing, inspection, and adherence to industry standards.</div>
+                    </li>
+                    <li style="display: flex; align-items: flex-start;">
+                        <span style="color: #1a0b5e; font-weight: bold; margin-right: 8px;">✓</span> 
+                        <div><strong>Building Inspector:</strong> Inspecting buildings and structures to ensure compliance with building codes, zoning regulations, and safety standards.</div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Admission Eligibility & Requirements Grid -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-bottom: 30px;">
+                
+                <!-- Admission Eligibility -->
+                <div style="background: #ffffff; padding: 25px; border-radius: 8px; border: 1px solid #e2e8f0; box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
+                    <h2 style="color: #1a0b5e; font-size: 20px; font-weight: 800; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                        Admission Eligibility
+                    </h2>
+                    <ul style="color: #444; font-size: 14.5px; line-height: 1.6; padding-left: 20px;">
+                        <li style="margin-bottom: 8px;">Minimum SSC equivalent from any discipline with minimum GPA: 2.00 .</li>
+                        <li style="margin-bottom: 8px;"><strong>HSC (Science)</strong> Students can directly join in 3rd Semester.</li>
+                        <li><strong>HSC (Vocational)</strong> students can directly join in 4th Semester. (Passing year 2011, GPA: 2.00)</li>
+                    </ul>
+                </div>
+
+                <!-- Enrollment Requirements -->
+                <div style="background: #ffffff; padding: 25px; border-radius: 8px; border: 1px solid #e2e8f0; box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
+                    <h2 style="color: #1a0b5e; font-size: 20px; font-weight: 800; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                        Enrollment Requirements
+                    </h2>
+                    <p style="color: #444; font-size: 14.5px; margin-bottom: 10px;">To enroll in Headway Engineering Institute, you need to fulfill the following requirements:</p>
+                    <ul style="color: #444; font-size: 14.5px; line-height: 1.6; padding-left: 20px;">
+                        <li style="margin-bottom: 8px;"><strong>Application Form:</strong> Collect the application form from the college campus desk and fill it out by hand.</li>
+                        <li style="margin-bottom: 8px;"><strong>SSC Certificate/Transcript:</strong> Provide the original certificate or transcript from the SSC or equivalent exam.</li>
+                        <li><strong>Photographs:</strong> Submit 3 color passport-sized photos and 2 stamp-sized photos.</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- Lab Facilities -->
+            <div style="text-align: center; background: #001253; color: white; padding: 30px; border-radius: 8px;">
+                <h2 style="font-size: 22px; font-weight: 800; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 1px;">
+                    Lab Facilities
+                </h2>
+                <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 15px;">
+                    <span style="background: rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 30px; font-weight: bold; font-size: 14px;">🛠️ Construction Lab</span>
+                    <span style="background: rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 30px; font-weight: bold; font-size: 14px;">🔭 Surveying Lab</span>
+                    <span style="background: rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 30px; font-weight: bold; font-size: 14px;">💻 Computer Lab</span>
+                    <span style="background: rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 30px; font-weight: bold; font-size: 14px;">📐 Drawing Lab</span>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#111827] text-slate-400 text-center py-4 text-xs mt-auto">
+        <p>© 2026 IBIT-Islami Bank Institute of Technology, Sylhet. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        document.getElementById('mobile-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
