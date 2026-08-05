@@ -4,127 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - IBIT Sylhet</title>
+    <link rel="icon" type="image/jpeg" href="/assets/logo.jpeg">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 <body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
 
-    <!-- Header -->
-    <div class="bg-white py-4 px-6 border-b border-slate-200">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center space-y-3 md:space-y-0 md:space-x-4">
-            <!-- Circular Logo with Absolute Root Path -->
-            <img src="/assets/logo.jpeg" 
-                 alt="IBIT Logo" class="w-16 h-16 rounded-full object-cover shadow-sm">
-            <div class="text-center md:text-left">
-                <h1 class="text-xl md:text-2xl font-black text-slate-800 tracking-wide uppercase">
-                    IBIT-ISLAMI BANK INSTITUTE OF TECHNOLOGY, SYLHET
-                </h1>
-                <p class="text-xs font-semibold text-slate-500 mt-0.5">
-                    ESTD: 2006 &nbsp;|&nbsp; Nawa Corner (3rd, 4th & 5th Floor), Humayun Rashid Chattar, Sylhet
-                </p>
-            </div>
-        </div>
-    </div>
+    <div id="header-placeholder"></div>
 
-    <!-- Navigation Bar -->
-    <nav class="bg-[#1f2937] text-white shadow-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
-            <div class="hidden md:flex items-center space-x-1 text-sm font-bold tracking-wider">
-                <a href="/index.html" class="px-4 py-3.5 hover:bg-[#111827] transition">HOME</a>
-                <a href="/pages/about.html" class="px-4 py-3.5 hover:bg-[#111827] bg-[#111827] transition">ABOUT US</a>
-
-                <!-- ADMINISTRATION Dropdown -->
-                <div class="relative group">
-                    <button class="px-4 py-3.5 hover:bg-[#111827] flex items-center space-x-1 transition focus:outline-none">
-                        <span>ADMINISTRATION</span>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div class="absolute left-0 w-56 bg-[#001340] text-white shadow-2xl py-2 hidden group-hover:block border-t-2 border-blue-500">
-                        <a href="/pages/administration/faculty-members.html" class="block px-4 py-2.5 text-xs font-bold hover:bg-[#001f66] uppercase">FACULTY MEMBERS</a>
-                        <a href="/pages/administration/stuff.html" class="block px-4 py-2.5 text-xs font-bold hover:bg-[#001f66] uppercase">STUFF</a>
-                    </div>
-                </div>
-
-                <a href="/pages/contact.html" class="px-4 py-3.5 hover:bg-[#111827] transition">CONTACT</a>
-
-                <!-- DEPARTMENTS Dropdown -->
-                <div class="relative group">
-                    <button class="px-4 py-3.5 hover:bg-[#111827] flex items-center space-x-1 transition focus:outline-none">
-                        <span>DEPARTMENTS</span>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div class="absolute left-0 w-64 bg-[#001340] text-white shadow-2xl py-2 hidden group-hover:block border-t-2 border-blue-500">
-                        <a href="/pages/departments/computer-science-and-technology.html" class="block px-4 py-2.5 text-xs font-bold hover:bg-[#001f66] uppercase">COMPUTER SCIENCE & TECHNOLOGY</a>
-                        <a href="/pages/departments/electrical-technology.html" class="block px-4 py-2.5 text-xs font-bold hover:bg-[#001f66] uppercase">ELECTRICAL TECHNOLOGY</a>
-                        <a href="/pages/departments/civil-technology.html" class="block px-4 py-2.5 text-xs font-bold hover:bg-[#001f66] uppercase">CIVIL TECHNOLOGY</a>
-                    </div>
-                </div>
-
-                <a href="/pages/notice.html" class="px-4 py-3.5 hover:bg-[#111827] text-yellow-400 transition font-bold">NOTICE</a>
-            </div>
-
-            <!-- Mobile Menu Button -->
-            <button id="mobile-btn" class="md:hidden py-3 text-white font-bold">MENU ☰</button>
-        </div>
-
-        <!-- Mobile Nav links -->
-        <div id="mobile-menu" class="hidden md:hidden bg-[#111827] px-4 py-3 space-y-2 text-xs font-bold">
-            <a href="/index.html" class="block py-1">HOME</a>
-            <a href="/pages/about.html" class="block py-1 text-blue-400">ABOUT US</a>
-            <p class="text-slate-400 pt-2 border-t border-slate-700">ADMINISTRATION</p>
-            <a href="/pages/administration/faculty-members.html" class="block pl-3 py-1 text-slate-300">- FACULTY MEMBERS</a>
-            <a href="/pages/administration/stuff.html" class="block pl-3 py-1 text-slate-300">- STUFF</a>
-            <a href="/pages/contact.html" class="block py-1 border-t border-slate-700">CONTACT</a>
-            <p class="text-slate-400 pt-2 border-t border-slate-700">DEPARTMENTS</p>
-            <a href="/pages/departments/computer-science-and-technology.html" class="block pl-3 py-1 text-slate-300">- COMPUTER SCIENCE & TECHNOLOGY</a>
-            <a href="/pages/departments/electrical-technology.html" class="block pl-3 py-1 text-slate-300">- ELECTRICAL TECHNOLOGY</a>
-            <a href="/pages/departments/civil-technology.html" class="block pl-3 py-1 text-slate-300">- CIVIL TECHNOLOGY</a>
-            <a href="/pages/notice.html" class="block py-2 text-yellow-400 border-t border-slate-700">NOTICE</a>
-        </div>
-    </nav>
-
-    <!-- Main Content Area (Your Custom About Us Block) -->
     <main class="w-full flex-grow py-12 bg-white">
-        
         <div style="font-family: 'Segoe UI', Arial, sans-serif; color: #1a2b4c; line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 30px 20px; box-sizing: border-box; text-align: left;">
-
-          <!-- Center Logo Section (Path Updated) -->
-          <div style="text-align: center !important; margin-bottom: 25px !important;">
+          
+          <div data-aos="fade-up" data-aos-duration="800" style="text-align: center !important; margin-bottom: 25px !important;">
             <img src="/assets/logo.jpeg" alt="IBIT Sylhet Logo" style="max-width: 150px; height: auto; display: inline-block;">
           </div>
-
-          <!-- Heading -->
-          <h1 style="color: #1a2b4c; font-size: 26px; font-weight: 800; text-transform: uppercase; text-align: center; margin-bottom: 25px; border-bottom: 2px solid #1a2b4c; padding-bottom: 10px;">
+          
+          <h1 data-aos="fade-up" data-aos-duration="1000" style="color: #1a2b4c; font-size: 26px; font-weight: 800; text-transform: uppercase; text-align: center; margin-bottom: 25px; border-bottom: 2px solid #1a2b4c; padding-bottom: 10px;">
             About Us
           </h1>
-
-          <!-- Paragraph 1 -->
-          <p style="font-size: 15px; margin-bottom: 18px; text-align: justify;">
+          
+          <p data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100" style="font-size: 15px; margin-bottom: 18px; text-align: justify;">
             IBIT - Islami Bank Institute Of Technology, Sylhet, established in 1999, is a polytechnic institute operated by Islami Bank Foundation and approved by the Bangladesh Technical Education Board. Located on the 3rd, 4th, and 5th floors of Newa Corner at Humayun Rashid Chattar, Kadamtoli, Dakshin Surma, Sylhet-3100, the institute has made a significant impact in the region by providing quality engineering education to students. We offer 4-year diploma programs in Electrical Engineering, Civil Engineering, and Computer Science &amp; Engineering. Our courses are thoughtfully designed to combine theoretical knowledge with practical application, ensuring students gain a comprehensive understanding of their chosen fields.
           </p>
-
-          <!-- Paragraph 2 -->
-          <p style="font-size: 15px; margin-bottom: 18px; text-align: justify;">
+          
+          <p data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200" style="font-size: 15px; margin-bottom: 18px; text-align: justify;">
             Our experienced faculty members are dedicated to mentoring students throughout their academic journey. We create a supportive and vibrant campus environment, offering recreational and educational trips alongside extracurricular activities to enrich students' overall learning experience. We focus on preparing students for successful careers by emphasizing professional development, industry connections, and social responsibility. Our strong ties with industry leaders provide students with valuable networking opportunities and potential career pathways.
           </p>
-
-          <!-- Paragraph 3 -->
-          <p style="font-size: 15px; margin-bottom: 0; text-align: justify;">
+          
+          <p data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300" style="font-size: 15px; margin-bottom: 0; text-align: justify;">
             At IBIT - Islami Bank Institute Of Technology, Sylhet, we are committed to empowering students to achieve their full potential and succeed in the engineering industry. We appreciate your consideration of us as your partner in education and in building your bright future.
           </p>
-
         </div>
-
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-[#111827] text-slate-400 text-center py-4 text-xs mt-auto">
-        <p>© 2026 IBIT-Islami Bank Institute of Technology, Sylhet. All Rights Reserved.</p>
-    </footer>
+    <div id="footer-placeholder"></div>
 
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // Mobile Menu Toggle
-        document.getElementById('mobile-btn').addEventListener('click', () => {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
+        AOS.init({ once: true, offset: 50 });
+        fetch('/header.html').then(response => response.text()).then(data => {
+            document.getElementById('header-placeholder').innerHTML = data;
+            const mobileBtn = document.getElementById('mobile-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if(mobileBtn) mobileBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+        });
+        fetch('/footer.html').then(response => response.text()).then(data => {
+            document.getElementById('footer-placeholder').innerHTML = data;
         });
     </script>
 </body>
