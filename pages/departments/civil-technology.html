@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
-<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen overflow-x-hidden">
 
     <div id="header-placeholder"></div>
 
@@ -23,7 +23,6 @@
                 Diploma in Civil Engineering can pave the way for a promising career. Civil engineering, a vital branch of modern engineering and technology, primarily focuses on planning, design, and structural execution. This field encompasses a wide range of challenging projects, including supervising public works design and construction activities such as roads, bridges, tunnels, buildings, airports, dams, sewerage systems, ports, and more. A Civil Engineer plays a pivotal role in the planning, implementation, and maintenance of projects. Individuals with a Diploma in Civil Engineering possess both technical expertise and administrative skills necessary for the job. They can hold positions such as site engineer/manager, design consultant, researcher, educator, etc., across various construction projects in both public and private sectors. Moreover, they have opportunities to work as Deputy Assistant Engineers in government, semi-government, and autonomous organizations like LGED, PWD, R&H, BR, BBA, MES, EED, WASA, DESCO, DPDC, WDB, BADC, Bangladesh Airlines, Telecom Industry, as well as public and private housing and development projects.
             </p>
             
-            <!-- Background Fixed: Changed from #f8f9fa to #ffffff to blend with main background -->
             <div data-aos="fade-up" data-aos-delay="200" style="background-color: #ffffff; padding: 20px 0 40px 0; margin-bottom: 40px;">
                 <div style="width: 100%; max-width: 1100px; margin: 0 auto; text-align: center;">
                   <h2 style="color: #1a0b5e; font-size: 26px; font-weight: 900; text-transform: uppercase; margin-bottom: 35px; letter-spacing: 1px;">
@@ -105,16 +104,26 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ once: true, offset: 50 });
-        fetch('/header.html').then(response => response.text()).then(data => {
-            document.getElementById('header-placeholder').innerHTML = data;
-            const mobileBtn = document.getElementById('mobile-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            if(mobileBtn) mobileBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
-        });
-        fetch('/footer.html').then(response => response.text()).then(data => {
-            document.getElementById('footer-placeholder').innerHTML = data;
-        });
+        AOS.init({ once: true, offset: 50, easing: 'ease-in-out' });
+
+        fetch('/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-placeholder').innerHTML = data;
+                const mobileBtn = document.getElementById('mobile-btn');
+                const mobileMenu = document.getElementById('mobile-menu');
+                if(mobileBtn) {
+                    mobileBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+                }
+            })
+            .catch(error => console.error('Error loading header:', error));
+
+        fetch('/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading footer:', error));
     </script>
 </body>
 </html>
