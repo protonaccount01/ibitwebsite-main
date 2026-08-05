@@ -3,40 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - IBIT Sylhet</title>
-    <link rel="icon" type="image/jpeg" href="/assets/logo.jpeg">
+    <title>IBIT - Islami Bank Institute of Technology, Sylhet</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpeg" href="assets/logo.jpeg">
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Animation CSS -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
-<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen overflow-x-hidden">
 
+    <!-- ডাইনামিক হেডার এখানে লোড হবে -->
     <div id="header-placeholder"></div>
 
-    <main class="w-full flex-grow py-12 bg-white">
-        <!-- অ্যানিমেশন ক্লাস (data-aos) যোগ করা হয়েছে -->
-        <div data-aos="fade-up" data-aos-duration="1000">
-            <h1 class="text-center text-3xl font-bold mt-10">Welcome to IBIT Sylhet</h1>
-            <p class="text-center mt-4 text-slate-600">Top Ranked Private Polytechnic Institute in Bangladesh</p>
+    <!-- Main Content Area -->
+    <main class="w-full flex-grow bg-white">
+        
+        <!-- Banner/Slider Placeholder -->
+        <div data-aos="fade-in" data-aos-duration="1200" style="width: 100%; height: 350px; background-color: #001253; background-image: url('https://images.unsplash.com/photo-1541701494587-cb58502866ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center;">
+            <!-- আপনি চাইলে এখানে আপনার লোকাল ছবি দিতে পারেন -->
         </div>
+
+        <!-- Our Technology Section -->
+        <div style="background-color: #f8f9fa; padding: 50px 20px;">
+            <div style="width: 100%; max-width: 1100px; margin: 0 auto; text-align: center;">
+                <h2 data-aos="fade-up" style="color: #1a0b5e; font-size: 28px; font-weight: 900; text-transform: uppercase; margin-bottom: 40px; letter-spacing: 1px;">
+                    Our Technology
+                </h2>
+                <div style="display: flex; justify-content: center; align-items: center; gap: 30px; flex-wrap: wrap;">
+                    
+                    <!-- Card 1 -->
+                    <div data-aos="fade-up" data-aos-delay="100" style="flex: 1; min-width: 250px; max-width: 320px; background: #ffffff; padding: 40px 20px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.06); box-sizing: border-box; transition: transform 0.3s;">
+                        <div style="margin-bottom: 25px; display: flex; justify-content: center;">
+                            <svg width="65" height="65" viewBox="0 0 24 24" fill="none" stroke="#1a0b5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                <line x1="8" y1="21" x2="16" y2="21"></line>
+                                <line x1="12" y1="17" x2="12" y2="21"></line>
+                                <polyline points="7 8 10 11 7 14"></polyline>
+                                <line x1="13" y1="14" x2="17" y2="14"></line>
+                            </svg>
+                        </div>
+                        <div style="color: #1a0b5e; font-weight: 900; font-size: 16px; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.4;">
+                            Computer<br>Science &amp; Technology
+                        </div>
+                    </div>
+                    
+                    <!-- Card 2 -->
+                    <div data-aos="fade-up" data-aos-delay="200" style="flex: 1; min-width: 250px; max-width: 320px; background: #ffffff; padding: 40px 20px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.06); box-sizing: border-box; transition: transform 0.3s;">
+                        <div style="margin-bottom: 25px; display: flex; justify-content: center;">
+                            <svg width="65" height="65" viewBox="0 0 24 24" fill="none" stroke="#1a0b5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2a6 6 0 0 0-6 6c0 2.22 1.21 4.16 3 5.2V16a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-2.8c1.79-1.04 3-2.98 3-5.2a6 6 0 0 0-6-6z"></path>
+                                <path d="M9 21h6"></path>
+                                <path d="M10 17v4"></path>
+                                <path d="M14 17v4"></path>
+                                <polygon points="13 6 11 9 13 9 11 12"></polygon>
+                            </svg>
+                        </div>
+                        <div style="color: #1a0b5e; font-weight: 900; font-size: 16px; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.4;">
+                            Electrical<br>Technology
+                        </div>
+                    </div>
+                    
+                    <!-- Card 3 -->
+                    <div data-aos="fade-up" data-aos-delay="300" style="flex: 1; min-width: 250px; max-width: 320px; background: #ffffff; padding: 40px 20px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.06); box-sizing: border-box; transition: transform 0.3s;">
+                        <div style="margin-bottom: 25px; display: flex; justify-content: center;">
+                            <svg width="65" height="65" viewBox="0 0 24 24" fill="none" stroke="#1a0b5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+                                <path d="M9 22v-4h6v4"></path>
+                                <line x1="8" y1="6" x2="10" y2="6"></line>
+                                <line x1="14" y1="6" x2="16" y2="6"></line>
+                                <line x1="8" y1="10" x2="10" y2="10"></line>
+                                <line x1="14" y1="10" x2="16" y2="10"></line>
+                                <line x1="8" y1="14" x2="10" y2="14"></line>
+                                <line x1="14" y1="14" x2="16" y2="14"></line>
+                            </svg>
+                        </div>
+                        <div style="color: #1a0b5e; font-weight: 900; font-size: 16px; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.4;">
+                            Civil<br>Technology
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- College Statistics Section -->
+        <div style="background-color: #ffffff; padding: 60px 20px;">
+            <div style="width: 100%; max-width: 1100px; margin: 0 auto; text-align: center;">
+                <h2 data-aos="fade-up" style="color: #1a0b5e; font-size: 28px; font-weight: 900; text-transform: capitalize; margin: 0 0 10px 0; letter-spacing: 0.5px;">
+                    College Statistics at a Glance!
+                </h2>
+                <div data-aos="fade-up" data-aos-delay="50" style="color: #4b5563; font-size: 16px; font-weight: 600; margin-bottom: 50px;">
+                    Top Ranked Private Polytechnic Institute in Bangladesh
+                </div>
+                <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 30px;">
+                    
+                    <div data-aos="zoom-in" data-aos-delay="100" style="flex: 1; min-width: 150px; padding: 15px; box-sizing: border-box;">
+                        <div style="color: #1a0b5e; font-size: 40px; font-weight: 900; margin-bottom: 8px;">15+</div>
+                        <div style="color: #1a0b5e; font-weight: 800; font-size: 16px; text-transform: capitalize;">Years of Success</div>
+                    </div>
+                    
+                    <div data-aos="zoom-in" data-aos-delay="200" style="flex: 1; min-width: 150px; padding: 15px; box-sizing: border-box;">
+                        <div style="color: #1a0b5e; font-size: 40px; font-weight: 900; margin-bottom: 8px;">50+</div>
+                        <div style="color: #1a0b5e; font-weight: 800; font-size: 16px; text-transform: capitalize;">Faculty &amp; Staff</div>
+                    </div>
+                    
+                    <div data-aos="zoom-in" data-aos-delay="300" style="flex: 1; min-width: 150px; padding: 15px; box-sizing: border-box;">
+                        <div style="color: #1a0b5e; font-size: 40px; font-weight: 900; margin-bottom: 8px;">1200+</div>
+                        <div style="color: #1a0b5e; font-weight: 800; font-size: 16px; text-transform: capitalize;">Current Students</div>
+                    </div>
+                    
+                    <div data-aos="zoom-in" data-aos-delay="400" style="flex: 1; min-width: 150px; padding: 15px; box-sizing: border-box;">
+                        <div style="color: #1a0b5e; font-size: 40px; font-weight: 900; margin-bottom: 8px;">3500+</div>
+                        <div style="color: #1a0b5e; font-weight: 800; font-size: 16px; text-transform: capitalize;">Alumni</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
+    <!-- ডাইনামিক ফুটার এখানে লোড হবে -->
     <div id="footer-placeholder"></div>
 
-    <!-- Animation JS & Fetch Script -->
+    <!-- Scripts -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ once: true, offset: 50 }); // Once: true means animation happens only once per scroll
+        // অ্যানিমেশন ইনিশিয়ালাইজেশন
+        AOS.init({ 
+            once: true, 
+            offset: 50,
+            easing: 'ease-in-out'
+        });
 
-        fetch('/header.html').then(response => response.text()).then(data => {
-            document.getElementById('header-placeholder').innerHTML = data;
-            const mobileBtn = document.getElementById('mobile-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            if(mobileBtn) mobileBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
-        });
-        fetch('/footer.html').then(response => response.text()).then(data => {
-            document.getElementById('footer-placeholder').innerHTML = data;
-        });
+        // ক্লাউডফ্লেয়ারে হেডার ফেচ করার কোড
+        fetch('/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-placeholder').innerHTML = data;
+                
+                // হেডার লোড হওয়ার পর মোবাইল মেনু অ্যাক্টিভ করা
+                const mobileBtn = document.getElementById('mobile-btn');
+                const mobileMenu = document.getElementById('mobile-menu');
+                if(mobileBtn) {
+                    mobileBtn.addEventListener('click', () => {
+                        mobileMenu.classList.toggle('hidden');
+                    });
+                }
+            })
+            .catch(error => console.error('Error loading header:', error));
+
+        // ক্লাউডফ্লেয়ারে ফুটার ফেচ করার কোড
+        fetch('/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading footer:', error));
     </script>
 </body>
 </html>
