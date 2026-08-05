@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - IBIT Sylhet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+
+    <!-- Header -->
+    <div class="bg-white py-4 px-6 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center space-y-3 md:space-y-0 md:space-x-4">
+            <!-- Circular Logo -->
+            <img src="../assets/logo.jpeg" 
+                 alt="IBIT Logo" class="w-16 h-16 rounded-full object-cover shadow-sm">
+            <div class="text-center md:text-left">
+                <h1 class="text-xl md:text-2xl font-black text-slate-800 tracking-wide uppercase">
+                    IBIT-ISLAMI BANK INSTITUTE OF TECHNOLOGY, SYLHET
+                </h1>
+                <p class="text-xs font-semibold text-slate-500 mt-0.5">
+                    ESTD: 2006 &nbsp;|&nbsp; Nawa Corner (3rd, 4th & 5th Floor), Humayun Rashid Chattar, Sylhet
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="bg-[#1f2937] text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+            <div class="hidden md:flex items-center space-x-1 text-sm font-bold tracking-wider">
+                <a href="../index.html" class="px-4 py-3.5 hover:bg-[#111827] transition">HOME</a>
+                <a href="about.html" class="px-4 py-3.5 hover:bg-[#111827] transition">ABOUT US</a>
+
+                <!-- ADMINISTRATION Dropdown -->
+                <div class="relative group">
+                    <button class="px-4 py-3.5 hover:bg-[#111827] flex items-center space-x-1 transition focus:outline-none">
+                        <span>ADMINISTRATION</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="absolute left-0 w-56 bg-[#001340] text-white shadow-2xl py-2 hidden group-hover:block border-t-2 border-blue-500">
+                        <a href="administration/faculty-members.html" class="block px-4 py-2.5 text-xs font-bold hover:bg-[#001f66] uppercase">FACULTY MEMBERS</a>
+                        <a href="administration/stuff.html" class="block px-4 py-2.5 text-xs font-bold hover:bg-[#001f66] uppercase">STUFF</a>
+                    </div>
+                </div>
+
+                <a href="contact.html" class="px-4 py-3.5 hover:bg-[#111827] bg-[#111827] transition">CONTACT</a>
+
+                <!-- DEPARTMENTS Dropdown -->
+                <div class="relative group">
+                    <button class="px-4 py-3.5 hover:bg-[#111827] flex items-center space-x-1 transition focus:outline-none">
+                        <span>DEPARTMENTS</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="absolute left-0 w-64 bg-[#001340] text-white shadow-2xl py-2 hidden group-hover:block border-t-2 border-blue-500">
+                        <a href="departments/computer-science-and-technology.html" class="block px-4 py-2.5 text-xs font-bold hover:bg-[#001f66] uppercase">COMPUTER SCIENCE & TECHNOLOGY</a>
+                        <a href="departments/electrical-technology.html" class="block px-4 py-2.5 text-xs font-bold hover:bg-[#001f66] uppercase">ELECTRICAL TECHNOLOGY</a>
+                        <a href="departments/civil-technology.html" class="block px-4 py-2.5 text-xs font-bold hover:bg-[#001f66] uppercase">CIVIL TECHNOLOGY</a>
+                    </div>
+                </div>
+
+                <a href="notice.html" class="px-4 py-3.5 hover:bg-[#111827] text-yellow-400 transition font-bold">NOTICE</a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-btn" class="md:hidden py-3 text-white font-bold">MENU ☰</button>
+        </div>
+
+        <!-- Mobile Nav links -->
+        <div id="mobile-menu" class="hidden md:hidden bg-[#111827] px-4 py-3 space-y-2 text-xs font-bold">
+            <a href="../index.html" class="block py-1">HOME</a>
+            <a href="about.html" class="block py-1">ABOUT US</a>
+            <p class="text-slate-400 pt-2 border-t border-slate-700">ADMINISTRATION</p>
+            <a href="administration/faculty-members.html" class="block pl-3 py-1 text-slate-300">- FACULTY MEMBERS</a>
+            <a href="administration/stuff.html" class="block pl-3 py-1 text-slate-300">- STUFF</a>
+            <a href="contact.html" class="block py-1 text-blue-400 border-t border-slate-700">CONTACT</a>
+            <p class="text-slate-400 pt-2 border-t border-slate-700">DEPARTMENTS</p>
+            <a href="departments/computer-science-and-technology.html" class="block pl-3 py-1 text-slate-300">- COMPUTER SCIENCE & TECHNOLOGY</a>
+            <a href="departments/electrical-technology.html" class="block pl-3 py-1 text-slate-300">- ELECTRICAL TECHNOLOGY</a>
+            <a href="departments/civil-technology.html" class="block pl-3 py-1 text-slate-300">- CIVIL TECHNOLOGY</a>
+            <a href="notice.html" class="block py-2 text-yellow-400 border-t border-slate-700">NOTICE</a>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="w-full flex-grow py-12 bg-white">
+        
+        <!-- Contact Us Block -->
+        <div style="width: 100%; max-width: 1100px; margin: 30px auto; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; box-sizing: border-box; padding: 0 20px;">
+
+          <!-- ১. টাইটেল -->
+          <div style="text-align: center; margin-bottom: 35px;">
+            <h2 style="color: #1a0b5e; font-size: 28px; font-weight: 800; text-transform: uppercase; margin: 0; letter-spacing: 1px;">
+              Contact Us
+            </h2>
+          </div>
+
+          <!-- ২. কন্টাক্ট ইনফো কার্ড -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px;">
+            
+            <!-- Location -->
+            <div style="background: #f8f9fa; padding: 25px 20px; border-radius: 12px; border-left: 4px solid #1a0b5e; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; align-items: flex-start; gap: 15px;">
+              <div style="flex-shrink: 0;">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#1a0b5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+              </div>
+              <div>
+                <h4 style="margin: 0 0 5px 0; color: #1a0b5e; font-size: 16px; font-weight: 700;">Location</h4>
+                <p style="margin: 0; color: #444; font-size: 14px; line-height: 1.4;">
+                  Nawa Corner (3rd, 4th &amp; 5th Floor), Humayun Rashid Chattar, Sylhet
+                </p>
+              </div>
+            </div>
+
+            <!-- Phone -->
+            <div style="background: #f8f9fa; padding: 25px 20px; border-radius: 12px; border-left: 4px solid #1a0b5e; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; align-items: flex-start; gap: 15px;">
+              <div style="flex-shrink: 0;">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#1a0b5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                </svg>
+              </div>
+              <div>
+                <h4 style="margin: 0 0 5px 0; color: #1a0b5e; font-size: 16px; font-weight: 700;">Call Us</h4>
+                <p style="margin: 0; color: #444; font-size: 14px; line-height: 1.4;">
+                  01964-000068
+                </p>
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div style="background: #f8f9fa; padding: 25px 20px; border-radius: 12px; border-left: 4px solid #1a0b5e; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; align-items: flex-start; gap: 15px;">
+              <div style="flex-shrink: 0;">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#1a0b5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                  <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+              </div>
+              <div>
+                <h4 style="margin: 0 0 5px 0; color: #1a0b5e; font-size: 16px; font-weight: 700;">Email Us</h4>
+                <p style="margin: 0; color: #444; font-size: 14px; line-height: 1.4;">
+                  ibitsylhet2012@gmail.com
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ৩. গুগল ফর্ম এবং আপনার দেওয়া গুগল ম্যাপ -->
+          <div style="display: flex; flex-wrap: wrap; gap: 30px; align-items: stretch;">
+
+            <!-- গুগল ফর্ম -->
+            <div style="flex: 1; min-width: 300px; background: #ffffff; border-radius: 12px; border: 1px solid #eee; box-shadow: 0 5px 15px rgba(0,0,0,0.05); overflow: hidden; height: 520px;">
+              <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSed2Tfa7T1yhfvMIgxFlw5b4pBs1gZ_jFBYlQvj5JgX_fLnnA/viewform?embedded=true&hl=en" width="100%" height="520" frameborder="0" marginheight="0" marginwidth="0" style="border:none; width:100%; height:520px;">Loading…</iframe>
+            </div>
+
+            <!-- আপনার আপডেট করা গুগল ম্যাপ -->
+            <div style="flex: 1; min-width: 300px; border-radius: 12px; overflow: hidden; border: 1px solid #eee; box-shadow: 0 5px 15px rgba(0,0,0,0.05); height: 520px;">
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d231654.0394059591!2d91.58661108671872!3d24.877699999999994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3751ab2662841227%3A0x6c98add44a507220!2sIslami%20Bank%20Institute%20of%20Technology(IBIT)%2CSylhet!5e0!3m2!1sen!2sbd!4v1784817570571!5m2!1sen!2sbd" width="100%" height="100%" style="border:0; height: 520px;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            </div>
+
+          </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#111827] text-slate-400 text-center py-4 text-xs mt-auto">
+        <p>© 2026 IBIT-Islami Bank Institute of Technology, Sylhet. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        document.getElementById('mobile-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
