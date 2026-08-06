@@ -171,7 +171,7 @@
             })
             .catch(error => console.error('Error loading footer:', error));
 
-        fetch('/api/get-notices')
+        fetch('/api/notices')
             .then(res => res.json())
             .then(data => {
                 const container = document.getElementById('latest-notices');
