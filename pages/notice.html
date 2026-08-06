@@ -35,10 +35,10 @@
         </div>
     </main>
 
-    <div id="notice-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[100] flex items-center justify-center p-4">
+    <div id="notice-modal" class="hidden fixed inset-0 bg-slate-900 bg-opacity-60 z-[100] flex items-center justify-center p-4">
         <div class="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col relative overflow-hidden">
             <div class="bg-slate-100 p-5 border-b border-slate-200 flex justify-between items-center">
-                <h2 id="modal-title" class="text-xl font-bold text-[#1a0b5e]">Notice Title</h2>
+                <h2 id="modal-title" class="text-xl font-bold text-[#1a0b5e]"></h2>
                 <button onclick="closeModal()" class="text-slate-400 hover:text-red-500 font-bold text-3xl leading-none">&times;</button>
             </div>
             <div id="modal-content" class="p-6 overflow-y-auto prose max-w-none text-slate-700 text-justify">
@@ -47,15 +47,6 @@
                 <button onclick="closeModal()" class="px-5 py-2 bg-slate-200 text-slate-700 rounded font-bold hover:bg-slate-300 transition">Close</button>
             </div>
         </div>
-    </div>
-
-    <div id="pdf-container" class="fixed -left-[9999px] -top-[9999px] p-8 font-sans bg-white text-black w-[800px]">
-        <div class="text-center mb-6 border-b-2 border-slate-800 pb-4">
-            <h1 class="text-2xl font-black uppercase">IBIT - Islami Bank Institute of Technology, Sylhet</h1>
-            <h3 id="pdf-title" class="text-lg font-bold mt-3 text-slate-800"></h3>
-            <p id="pdf-date" class="text-sm font-semibold mt-1 text-slate-500"></p>
-        </div>
-        <div id="pdf-content" class="prose max-w-none text-justify text-base"></div>
     </div>
 
     <div id="footer-placeholder"></div>
@@ -87,7 +78,7 @@
             })
             .catch(error => console.error('Error loading footer:', error));
 
-        // 🔥 সব নোটিশ ফেচ করার কোড (ডাটাবেস API থেকে) 🔥
+        // Fetch Notices
         fetch('/api/notices')
             .then(res => res.json())
             .then(data => {
@@ -105,10 +96,10 @@
                     const safeTitle = n.title.replace(/'/g, "\\'").replace(/"/g, '&quot;');
                     const encodedContent = encodeURIComponent(n.content);
                     
-                    // Original PDF if exists, otherwise generate from HTML
+                    // Unified PDF Button (Original PDF or Generated PDF)
                     const pdfButton = n.pdf_url 
-                        ? `<a href="${n.pdf_url}" target="_blank" onclick="event.stopPropagation();" class="shrink-0 flex items-center gap-1.5 bg-green-700 hover:bg-green-800 text-white px-3 py-1.5 rounded text-xs font-bold transition shadow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Orig. PDF</a>`
-                        : `<button onclick="event.stopPropagation(); downloadPDF('${safeTitle}', '${encodedContent}', '${formattedDate}')" class="shrink-0 flex items-center gap-1.5 bg-[#1a0b5e] hover:bg-blue-800 text-white px-3 py-1.5 rounded text-xs font-bold transition shadow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Gen. PDF</button>`;
+                        ? `<a href="${n.pdf_url}" target="_blank" onclick="event.stopPropagation();" class="shrink-0 flex items-center gap-1.5 bg-[#1a0b5e] hover:bg-blue-800 text-white px-3 py-1.5 rounded text-xs font-bold transition shadow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> PDF</a>`
+                        : `<button onclick="event.stopPropagation(); downloadPDF('${safeTitle}', '${encodedContent}', '${formattedDate}')" class="shrink-0 flex items-center gap-1.5 bg-[#1a0b5e] hover:bg-blue-800 text-white px-3 py-1.5 rounded text-xs font-bold transition shadow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> PDF</button>`;
 
                     container.innerHTML += `
                         <div class="flex flex-col sm:flex-row justify-between sm:items-center px-6 py-5 hover:bg-slate-50 transition duration-150 ease-in-out group border-b border-slate-100 last:border-b-0 cursor-pointer" onclick="openModal('${safeTitle}', '${encodedContent}')">
@@ -147,23 +138,34 @@
             document.getElementById('notice-modal').classList.add('hidden');
         }
 
-        // 🔥 Updated PDF Download Logic (No Flashing) 🔥
+        // Bulletproof PDF Download Logic
         function downloadPDF(title, encodedContent, date) {
-            document.getElementById('pdf-title').innerText = title;
-            document.getElementById('pdf-date').innerText = "Published on: " + date;
-            document.getElementById('pdf-content').innerHTML = decodeURIComponent(encodedContent);
-            
-            var element = document.getElementById('pdf-container');
+            // HTML String for PDF Generation
+            const pdfContent = `
+                <div style="padding: 40px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #0f172a; max-width: 800px; margin: 0 auto;">
+                    <div style="text-align: center; border-bottom: 2px solid #1e293b; padding-bottom: 20px; margin-bottom: 30px;">
+                        <h1 style="font-size: 24px; font-weight: 900; margin: 0; text-transform: uppercase; color: #1e293b;">IBIT - Islami Bank Institute of Technology, Sylhet</h1>
+                        <h3 style="font-size: 20px; font-weight: 700; margin: 15px 0 5px 0; color: #334155;">${title}</h3>
+                        <p style="font-size: 14px; font-weight: 600; color: #64748b; margin: 0;">Published on: ${date}</p>
+                    </div>
+                    <div style="font-size: 16px; text-align: justify; line-height: 1.6; color: #334155;">
+                        ${decodeURIComponent(encodedContent)}
+                    </div>
+                    <div style="margin-top: 50px; font-size: 12px; text-align: center; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 20px;">
+                        Generated by IBIT Admin Portal &copy; ${new Date().getFullYear()}
+                    </div>
+                </div>
+            `;
 
             var opt = {
-                margin:       0.5,
-                filename:     title.substring(0, 20) + '_Notice.pdf',
+                margin:       0,
+                filename:     title.substring(0, 30).replace(/[^a-zA-Z0-9]/g, '_') + '_Notice.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2 },
-                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
             };
 
-            html2pdf().set(opt).from(element).save();
+            html2pdf().set(opt).from(pdfContent).save();
         }
     </script>
 </body>
