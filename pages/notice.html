@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notice Board - IBIT Sylhet</title>
+    <link rel="icon" type="image/jpeg" href="/assets/logo.jpeg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- PDF Generator Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen overflow-x-hidden">
+
+    <!-- ডাইনামিক হেডার -->
+    <div id="header-placeholder"></div>
+
+    <main class="w-full flex-grow py-12 bg-slate-50">
+        <div class="max-w-5xl mx-auto px-4" data-aos="fade-up" data-aos-duration="1000">
+            
+            <div class="text-center mb-10">
+                <h1 class="text-3xl font-black text-[#1a0b5e] uppercase tracking-wider mb-2">Notice Board</h1>
+                <div class="w-24 h-1 bg-[#1a0b5e] mx-auto rounded-full"></div>
+            </div>
+            
+            <!-- Notice Box List -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden border border-slate-200">
+                <!-- Table Header -->
+                <div class="bg-[#1a0b5e] text-white flex justify-between items-center px-6 py-4 font-bold text-sm uppercase tracking-wider">
+                    <div class="flex-grow">Notice Title</div>
+                    <div class="w-32 text-right hidden sm:block">Published Date</div>
+                </div>
+                
+                <!-- Notice List Container -->
+                <div id="public-notice-list" class="divide-y divide-slate-100">
+                    <div class="p-8 text-center text-slate-400">Loading all notices from database...</div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- 🔴 Notice Pop-up (Modal) 🔴 -->
+    <div id="notice-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[100] flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col relative overflow-hidden">
+            <!-- Modal Header -->
+            <div class="bg-slate-100 p-5 border-b border-slate-200 flex justify-between items-center">
+                <h2 id="modal-title" class="text-xl font-bold text-[#1a0b5e]">Notice Title</h2>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-red-500 font-bold text-3xl leading-none">&times;</button>
+            </div>
+            <!-- Modal Content (Rendered HTML) -->
+            <div id="modal-content" class="p-6 overflow-y-auto prose max-w-none text-slate-700 text-justify">
+                <!-- Rich text content will be injected here -->
+            </div>
+            <!-- Modal Footer -->
+            <div class="p-4 border-t border-slate-200 bg-slate-50 flex justify-end">
+                <button onclick="closeModal()" class="px-5 py-2 bg-slate-200 text-slate-700 rounded font-bold hover:bg-slate-300 transition">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden div for PDF generation -->
+    <div id="pdf-container" class="hidden p-8 font-sans bg-white text-black w-[800px]">
+        <div class="text-center mb-6 border-b-2 border-slate-800 pb-4">
+            <h1 class="text-2xl font-black uppercase">IBIT - Islami Bank Institute of Technology, Sylhet</h1>
+            <h3 id="pdf-title" class="text-lg font-bold mt-3 text-slate-800"></h3>
+            <p id="pdf-date" class="text-sm font-semibold mt-1 text-slate-500"></p>
+        </div>
+        <div id="pdf-content" class="prose max-w-none text-justify text-base"></div>
+    </div>
+
+    <!-- ডাইনামিক ফুটার -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ once: true, offset: 50, easing: 'ease-in-out' });
+
+        // Load Header
+        fetch('/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-placeholder').innerHTML = data;
+                const mobileBtn = document.getElementById('mobile-btn');
+                const mobileMenu = document.getElementById('mobile-menu');
+                if(mobileBtn) {
+                    mobileBtn.addEventListener('click', () => {
+                        mobileMenu.classList.toggle('hidden');
+                    });
+                }
+            })
+            .catch(error => console.error('Error loading header:', error));
+
+        // Load Footer
+        fetch('/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading footer:', error));
+
+        // 🔥 সব নোটিশ ফেচ করার কোড (ডাটাবেস API থেকে) 🔥
+        fetch('/api/notices')
+            .then(res => res.json())
+            .then(data => {
+                const container = document.getElementById('public-notice-list');
+                container.innerHTML = '';
+                
+                if(!data || data.length === 0) {
+                    container.innerHTML = '<div class="p-8 text-center text-slate-500 font-semibold">No notices published yet.</div>';
+                    return;
+                }
+                
+                // সবগুলো নোটিশ লুপ করে দেখানো হচ্ছে
+                data.forEach(n => {
+                    const dateObj = new Date(n.created_at);
+                    const formattedDate = dateObj.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+                    
+                    // JSON safe string escaping for onClick events
+                    const safeTitle = n.title.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                    // Using encodeURIComponent to safely pass rich HTML content to the function
+                    const encodedContent = encodeURIComponent(n.content);
+                    
+                    container.innerHTML += `
+                        <div class="flex flex-col sm:flex-row justify-between sm:items-center px-6 py-5 hover:bg-slate-50 transition duration-150 ease-in-out group border-b border-slate-100 last:border-b-0">
+                            
+                            <div class="flex items-start gap-4 flex-grow pr-4 mb-4 sm:mb-0">
+                                <div class="mt-1 text-blue-500 group-hover:text-[#1a0b5e] transition">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                                </div>
+                                <div>
+                                    <span class="sm:hidden text-xs font-bold text-slate-500 mb-1 block">Published: ${formattedDate}</span>
+                                    <h3 class="text-slate-800 font-bold text-[15px] group-hover:text-blue-700 transition leading-snug cursor-pointer" 
+                                        onclick="openModal('${safeTitle}', '${encodedContent}')">
+                                        ${n.title}
+                                    </h3>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between sm:justify-end sm:w-64 gap-4">
+                                <span class="hidden sm:inline-block bg-blue-50 text-blue-700 font-bold text-xs px-3 py-1.5 rounded-full border border-blue-100 whitespace-nowrap">
+                                    ${formattedDate}
+                                </span>
+                                <button onclick="downloadPDF('${safeTitle}', '${encodedContent}', '${formattedDate}')" class="shrink-0 flex items-center gap-1.5 bg-[#1a0b5e] hover:bg-blue-800 text-white px-3 py-1.5 rounded text-xs font-bold transition shadow">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                    PDF
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }).catch(() => {
+                document.getElementById('public-notice-list').innerHTML = '<div class="p-8 text-center text-red-500 font-bold">Unable to load notices. Database might be offline.</div>';
+            });
+
+        // Modal Logic
+        function openModal(title, encodedContent) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-content').innerHTML = decodeURIComponent(encodedContent);
+            document.getElementById('notice-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('notice-modal').classList.add('hidden');
+        }
+
+        // PDF Download Logic (html2pdf)
+        function downloadPDF(title, encodedContent, date) {
+            document.getElementById('pdf-title').innerText = title;
+            document.getElementById('pdf-date').innerText = "Published on: " + date;
+            document.getElementById('pdf-content').innerHTML = decodeURIComponent(encodedContent);
+            
+            var element = document.getElementById('pdf-container');
+            element.classList.remove('hidden'); // Show temporarily for rendering
+
+            var opt = {
+                margin:       0.5,
+                filename:     title.substring(0, 20) + '_Notice.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                element.classList.add('hidden'); // Hide again
+            });
+        }
+    </script>
+</body>
+</html>
