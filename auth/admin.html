@@ -12,53 +12,57 @@
             content: attr(title); position: absolute; top: -25px; left: 50%; transform: translateX(-50%);
             background: #111827; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px; white-space: nowrap; z-index: 10; pointer-events: none;
         }
-        /* Hide Default Date Picker Icon in Webkit */
         input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; opacity: 0.6; transition: 0.2s; }
         input[type="date"]::-webkit-calendar-picker-indicator:hover { opacity: 1; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans h-screen flex flex-col" onclick="closeAllDropdowns()">
 
+    <!-- Header (With Logo) -->
     <header class="bg-[#1a0b5e] text-white py-4 px-6 shadow-md z-20 flex justify-between items-center hidden" id="top-header">
         <div class="flex items-center gap-4">
-            <img src="/assets/logo.jpeg" class="w-10 h-10 rounded-full border-2 border-white shadow-sm" alt="IBIT Logo">
+            <img src="/assets/logo.jpeg" class="w-10 h-10 rounded-full border-2 border-white shadow-sm" alt="IBIT Logo" onerror="this.src='https://via.placeholder.com/40'">
             <div>
                 <h1 class="text-xl font-black uppercase tracking-wider">IBIT-ISLAMI BANK INSTITUTE OF TECHNOLOGY, SYLHET</h1>
                 <p class="text-xs text-blue-200">Admin Control Panel</p>
             </div>
         </div>
-        <button onclick="logout()" class="text-sm font-bold bg-white text-[#1a0b5e] px-4 py-2 rounded hover:bg-slate-200 transition shadow">Logout</button>
+        <button type="button" onclick="logout()" class="text-sm font-bold bg-white text-[#1a0b5e] px-4 py-2 rounded hover:bg-slate-200 transition shadow">Logout</button>
     </header>
 
+    <!-- Login Screen -->
     <div id="login-screen" class="fixed inset-0 bg-slate-900 flex items-center justify-center z-50">
         <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md text-center relative">
-            <img src="/assets/logo.jpeg" class="w-24 h-24 mx-auto rounded-full mb-4 border-4 border-slate-100 shadow-sm" alt="Logo">
+            <img src="/assets/logo.jpeg" class="w-24 h-24 mx-auto rounded-full mb-4 border-4 border-slate-100 shadow-sm" alt="Logo" onerror="this.src='https://via.placeholder.com/100'">
             <h2 class="text-2xl font-black text-[#1a0b5e] mb-6 uppercase">Admin Login</h2>
             
             <input type="text" id="username" placeholder="Username" class="w-full px-4 py-3 border border-slate-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-[#1a0b5e]">
             
             <div class="relative mb-6">
                 <input type="password" id="password" placeholder="Password" class="w-full px-4 py-3 border border-slate-300 rounded focus:outline-none focus:ring-2 focus:ring-[#1a0b5e]">
-                <button onclick="togglePassword()" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-[#1a0b5e] focus:outline-none" title="Show/Hide Password">
+                <!-- Type changed to button so it doesn't submit form/reload -->
+                <button type="button" onclick="togglePassword()" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-[#1a0b5e] focus:outline-none" title="Show/Hide Password">
                     <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>
                     </svg>
                 </button>
             </div>
             
-            <button onclick="login()" id="login-btn" class="w-full bg-[#1a0b5e] text-white py-3 rounded font-bold hover:bg-blue-900 transition shadow-lg">LOGIN</button>
+            <button type="button" onclick="login()" id="login-btn" class="w-full bg-[#1a0b5e] text-white py-3 rounded font-bold hover:bg-blue-900 transition shadow-lg">LOGIN</button>
             <p id="login-error" class="text-red-500 mt-3 font-bold hidden">Invalid ID or Password</p>
         </div>
     </div>
 
     <div class="flex flex-grow overflow-hidden">
+        <!-- Sidebar -->
         <aside class="w-64 bg-slate-900 text-white flex flex-col hidden shadow-xl z-10" id="sidebar">
             <nav class="flex-grow p-4 space-y-2 mt-4">
-                <button onclick="showDashboard()" id="nav-dash" class="w-full text-left px-4 py-3 rounded text-sm font-bold bg-blue-700 text-white transition shadow">Dashboard</button>
-                <button onclick="showNoticePanel()" id="nav-notice" class="w-full text-left px-4 py-3 hover:bg-slate-800 rounded text-sm font-bold text-slate-300 transition">Notice Board</button>
+                <button type="button" onclick="showDashboard()" id="nav-dash" class="w-full text-left px-4 py-3 rounded text-sm font-bold bg-blue-700 text-white transition shadow">Dashboard</button>
+                <button type="button" onclick="showNoticePanel()" id="nav-notice" class="w-full text-left px-4 py-3 hover:bg-slate-800 rounded text-sm font-bold text-slate-300 transition">Notice Board</button>
             </nav>
         </aside>
 
+        <!-- Main Content -->
         <main class="flex-grow p-8 overflow-y-auto hidden bg-slate-50" id="main-content">
             
             <div id="dashboard-view">
@@ -71,7 +75,7 @@
             <div id="notice-panel-view" class="hidden">
                 <div class="flex justify-between items-center mb-6">
                     <h1 class="text-2xl font-bold text-slate-800">Notice Management</h1>
-                    <button onclick="showEditor()" class="bg-[#1a0b5e] hover:bg-blue-900 text-white px-5 py-2.5 rounded font-bold transition shadow text-sm flex items-center gap-2">
+                    <button type="button" onclick="showEditor()" class="bg-[#1a0b5e] hover:bg-blue-900 text-white px-5 py-2.5 rounded font-bold transition shadow text-sm flex items-center gap-2">
                         <span>+</span> Create Notice
                     </button>
                 </div>
@@ -90,6 +94,7 @@
                 </div>
             </div>
 
+            <!-- Create/Edit Notice View -->
             <div id="notice-editor-view" class="hidden bg-white rounded-xl shadow-sm border border-slate-200 p-8 max-w-5xl mx-auto">
                 <h2 id="editor-title" class="text-2xl font-black text-[#1a0b5e] mb-6 border-b border-slate-100 pb-4 uppercase">Create Notice</h2>
                 <input type="hidden" id="edit-id">
@@ -100,9 +105,9 @@
                 <div class="mb-6">
                     <label class="font-bold text-slate-700 text-sm mb-2 block">Choose Input Format</label>
                     <div class="inline-flex bg-slate-100 p-1 rounded-lg border border-slate-200">
-                        <button onclick="setFormat('visual')" id="fmt-visual" class="px-6 py-2 rounded-md text-sm font-bold bg-white shadow text-[#1a0b5e] transition">Visual Editor</button>
-                        <button onclick="setFormat('html')" id="fmt-html" class="px-6 py-2 rounded-md text-sm font-bold text-slate-500 hover:text-slate-800 transition">Custom HTML</button>
-                        <button onclick="setFormat('pdf')" id="fmt-pdf" class="px-6 py-2 rounded-md text-sm font-bold text-slate-500 hover:text-slate-800 transition">Upload PDF</button>
+                        <button type="button" onclick="setFormat('visual')" id="fmt-visual" class="px-6 py-2 rounded-md text-sm font-bold bg-white shadow text-[#1a0b5e] transition">Visual Editor</button>
+                        <button type="button" onclick="setFormat('html')" id="fmt-html" class="px-6 py-2 rounded-md text-sm font-bold text-slate-500 hover:text-slate-800 transition">Custom HTML</button>
+                        <button type="button" onclick="setFormat('pdf')" id="fmt-pdf" class="px-6 py-2 rounded-md text-sm font-bold text-slate-500 hover:text-slate-800 transition">Upload PDF</button>
                     </div>
                 </div>
                 
@@ -117,6 +122,7 @@
                     <input type="file" id="pdf-upload" accept="application/pdf" class="mx-auto text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-bold file:bg-[#1a0b5e] file:text-white hover:file:bg-blue-800 transition cursor-pointer">
                 </div>
 
+                <!-- Timer Section -->
                 <div class="bg-blue-50 p-5 border border-blue-100 rounded-lg mb-8">
                     <div class="flex items-center gap-2">
                         <input type="checkbox" id="auto-delete" class="w-4 h-4 cursor-pointer" onchange="document.getElementById('editor-timer-box').classList.toggle('hidden')">
@@ -146,25 +152,49 @@
                 </div>
 
                 <div class="flex justify-end gap-3 pt-4 border-t border-slate-100">
-                    <button onclick="showNoticePanel()" class="px-8 py-3 border border-slate-300 rounded font-bold hover:bg-slate-100 text-slate-600 transition">Cancel</button>
-                    <button onclick="saveNotice()" id="publish-btn" class="px-8 py-3 bg-green-600 text-white rounded font-bold hover:bg-green-700 transition shadow-lg">Publish Notice</button>
+                    <button type="button" onclick="previewNotice()" class="px-6 py-3 bg-blue-100 text-blue-800 border border-blue-200 rounded font-bold hover:bg-blue-200 transition flex items-center gap-2 shadow-sm">
+                        👁️ Preview
+                    </button>
+                    <button type="button" onclick="showNoticePanel()" class="px-8 py-3 border border-slate-300 rounded font-bold hover:bg-slate-100 text-slate-600 transition">Cancel</button>
+                    <button type="button" onclick="saveNotice()" id="publish-btn" class="px-8 py-3 bg-green-600 text-white rounded font-bold hover:bg-green-700 transition shadow-lg">Publish Notice</button>
                 </div>
             </div>
         </main>
     </div>
 
+    <!-- Live Preview Modal -->
+    <div id="preview-modal" class="hidden fixed inset-0 bg-slate-900 bg-opacity-70 z-[100] flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col relative overflow-hidden">
+            <div class="bg-slate-100 p-5 border-b border-slate-200 flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <span class="bg-blue-600 text-white text-xs px-2 py-1 rounded font-bold uppercase tracking-wider">Live Preview</span>
+                    <h2 id="preview-title" class="text-xl font-bold text-[#1a0b5e]"></h2>
+                </div>
+                <button type="button" onclick="closePreview()" class="text-slate-400 hover:text-red-500 font-bold text-3xl leading-none">&times;</button>
+            </div>
+            <div id="preview-content" class="p-6 overflow-y-auto prose max-w-none text-slate-700 text-justify">
+                <!-- Content injected here -->
+            </div>
+            <div class="p-4 border-t border-slate-200 bg-slate-50 flex justify-end">
+                <button type="button" onclick="closePreview()" class="px-6 py-2 bg-[#1a0b5e] text-white rounded font-bold hover:bg-blue-900 transition shadow">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Modal -->
     <div id="delete-modal" class="hidden fixed inset-0 bg-slate-900 bg-opacity-60 z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-sm text-center">
             <h3 class="text-xl font-bold text-slate-800 mb-2">Delete Notice?</h3>
             <p class="text-sm text-slate-500 mb-6">This action cannot be undone.</p>
             <input type="hidden" id="delete-id">
             <div class="flex justify-center gap-3">
-                <button onclick="closeModals()" class="px-4 py-2 bg-slate-200 text-slate-700 font-bold rounded">Cancel</button>
-                <button onclick="confirmDelete()" id="confirm-del-btn" class="px-4 py-2 bg-red-600 text-white font-bold rounded hover:bg-red-700">Delete</button>
+                <button type="button" onclick="closeModals()" class="px-4 py-2 bg-slate-200 text-slate-700 font-bold rounded">Cancel</button>
+                <button type="button" onclick="confirmDelete()" id="confirm-del-btn" class="px-4 py-2 bg-red-600 text-white font-bold rounded hover:bg-red-700">Delete</button>
             </div>
         </div>
     </div>
 
+    <!-- Quick Timer Modal -->
     <div id="timer-modal" class="hidden fixed inset-0 bg-slate-900 bg-opacity-60 z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-sm border-t-4 border-[#1a0b5e]">
             <h3 class="text-lg font-bold text-[#1a0b5e] mb-1">Set Auto-Delete Timer</h3>
@@ -192,20 +222,22 @@
             </div>
             
             <div class="flex justify-between items-center">
-                <button onclick="clearQuickTimer()" class="text-xs text-red-500 font-bold hover:underline">Turn Off Timer</button>
+                <button type="button" onclick="clearQuickTimer()" class="text-xs text-red-500 font-bold hover:underline">Turn Off Timer</button>
                 <div class="flex gap-2">
-                    <button onclick="closeModals()" class="px-4 py-2 bg-slate-200 text-slate-700 font-bold rounded text-sm hover:bg-slate-300 transition">Cancel</button>
-                    <button onclick="saveQuickTimer()" id="save-timer-btn" class="px-4 py-2 bg-[#1a0b5e] text-white font-bold rounded text-sm hover:bg-blue-900 transition shadow">Save</button>
+                    <button type="button" onclick="closeModals()" class="px-4 py-2 bg-slate-200 text-slate-700 font-bold rounded text-sm hover:bg-slate-300 transition">Cancel</button>
+                    <button type="button" onclick="saveQuickTimer()" id="save-timer-btn" class="px-4 py-2 bg-[#1a0b5e] text-white font-bold rounded text-sm hover:bg-blue-900 transition shadow">Save</button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- 🔥 Missing script added here! 🔥 -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
     <script>
         let noticeData = [];
         let currentFormat = 'visual';
 
-        // Initialize Pro Timer Dropdowns
         window.onload = () => {
             let hrs = '', mins = '';
             for(let i=1; i<=12; i++) hrs += `<option value="${i}">${i.toString().padStart(2,'0')}</option>`;
@@ -218,7 +250,6 @@
             btn.innerText = btn.innerText === 'AM' ? 'PM' : 'AM';
         }
 
-        // Convert Custom UI to ISO String
         function getTimerISO(prefix) {
             const d = document.getElementById(prefix + '-date').value;
             if(!d) return null;
@@ -234,13 +265,11 @@
             const mm = m.toString().padStart(2, '0');
             const ss = s.toString().padStart(2, '0');
             
-            // Format to ISO
             const dateObj = new Date(`${d}T${hh}:${mm}:${ss}`);
             if(isNaN(dateObj.getTime())) return null;
             return dateObj.toISOString();
         }
 
-        // Set Custom UI from ISO String
         function setTimerUI(prefix, isoString) {
             if(!isoString) {
                 document.getElementById(prefix + '-date').value = '';
@@ -274,7 +303,6 @@
             modules: { toolbar: [ [{ 'header': [1,2,3,false] }], ['bold', 'italic', 'underline', 'strike'], [{'color':[]}, {'background':[]}], [{ 'list': 'ordered'}, { 'list': 'bullet' }], [{ 'align': [] }], ['link', 'image', 'video'], ['clean'] ] }
         });
 
-        // Professional Password Toggle
         function togglePassword() {
             const pwd = document.getElementById('password');
             const icon = document.getElementById('eye-icon');
@@ -301,6 +329,27 @@
             document.getElementById('container-pdf').classList.add('hidden');
 
             document.getElementById('container-' + fmt).classList.remove('hidden');
+        }
+
+        function previewNotice() {
+            const title = document.getElementById('n-title').value || 'Untitled Notice';
+            let content = '';
+            
+            if (currentFormat === 'visual') {
+                content = quill.root.innerHTML;
+            } else if (currentFormat === 'html') {
+                content = document.getElementById('html-editor').value;
+            } else if (currentFormat === 'pdf') {
+                content = '<div class="text-center py-10 bg-slate-50 rounded border border-dashed border-slate-300 text-slate-500 font-bold">📄 PDF File Selected.<br><span class="text-sm font-normal">Preview is not available for raw PDF uploads.</span></div>';
+            }
+
+            document.getElementById('preview-title').innerText = title;
+            document.getElementById('preview-content').innerHTML = content;
+            document.getElementById('preview-modal').classList.remove('hidden');
+        }
+
+        function closePreview() {
+            document.getElementById('preview-modal').classList.add('hidden');
         }
 
         async function login() {
@@ -400,11 +449,11 @@
                             </td>
                             <td class="p-4">${timerBadge}</td>
                             <td class="p-4 text-center relative">
-                                <button onclick="toggleDrop(event, ${n.id})" class="text-slate-500 hover:text-[#1a0b5e] font-black px-2 py-1 text-xl focus:outline-none">&#8942;</button>
+                                <button type="button" onclick="toggleDrop(event, ${n.id})" class="text-slate-500 hover:text-[#1a0b5e] font-black px-2 py-1 text-xl focus:outline-none">&#8942;</button>
                                 <div id="drop-${n.id}" class="dropdown-menu hidden absolute right-12 top-2 w-36 bg-white shadow-xl border border-slate-200 rounded-lg text-left z-50 overflow-hidden">
-                                    <button onclick="showEditor(true, ${n.id})" class="w-full text-left px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-100 font-bold border-b border-slate-100">Edit Content</button>
-                                    <button onclick="openTimerModal(${n.id})" class="w-full text-left px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-100 font-bold border-b border-slate-100">Set Timer</button>
-                                    <button onclick="openDeleteModal(${n.id})" class="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 font-bold">Delete</button>
+                                    <button type="button" onclick="showEditor(true, ${n.id})" class="w-full text-left px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-100 font-bold border-b border-slate-100">Edit Content</button>
+                                    <button type="button" onclick="openTimerModal(${n.id})" class="w-full text-left px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-100 font-bold border-b border-slate-100">Set Timer</button>
+                                    <button type="button" onclick="openDeleteModal(${n.id})" class="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 font-bold">Delete</button>
                                 </div>
                             </td>
                         </tr>`;
@@ -429,7 +478,6 @@
             if(currentFormat === 'visual') content = quill.root.innerHTML;
             else if (currentFormat === 'html') content = document.getElementById('html-editor').value;
 
-            // Get exact time from our pro UI
             let autoDel = null;
             if(document.getElementById('auto-delete').checked) {
                 autoDel = getTimerISO('ed');
@@ -487,7 +535,6 @@
             } catch(e) { alert('Connection Error!'); }
         }
 
-        // Quick Timer Update
         function openTimerModal(id) {
             const item = noticeData.find(x => x.id === id);
             document.getElementById('timer-id').value = id;
@@ -508,4 +555,32 @@
             btn.innerText = "Saving...";
             
             const payload = { id: item.id, title: item.title, content: item.content, pdf_url: item.pdf_url, auto_delete_date: newDate };
-            await fetch('/api/notices', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON
+            await fetch('/api/notices', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+            
+            closeModals();
+            fetchNotices();
+            btn.innerText = "Save";
+        }
+
+        function openDeleteModal(id) {
+            document.getElementById('delete-id').value = id;
+            document.getElementById('delete-modal').classList.remove('hidden');
+        }
+        function closeModals() { 
+            document.getElementById('delete-modal').classList.add('hidden'); 
+            document.getElementById('timer-modal').classList.add('hidden');
+            closePreview();
+        }
+        
+        async function confirmDelete() {
+            const id = document.getElementById('delete-id').value;
+            const btn = document.getElementById('confirm-del-btn');
+            btn.innerText = "Deleting...";
+            await fetch('/api/notices?id=' + id, { method: 'DELETE' });
+            closeModals();
+            btn.innerText = "Delete";
+            fetchNotices();
+        }
+    </script>
+</body>
+</html>
