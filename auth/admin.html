@@ -6,29 +6,38 @@
     <title>IBIT - Admin Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <style>
+        /* Quill Toolbar Tooltips Fix */
+        .ql-toolbar button:hover::after, .ql-toolbar .ql-picker:hover::after {
+            content: attr(title);
+            position: absolute; top: -25px; left: 50%; transform: translateX(-50%);
+            background: #111827; color: white; padding: 2px 6px; border-radius: 4px;
+            font-size: 11px; white-space: nowrap; z-index: 10; pointer-events: none;
+        }
+    </style>
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans h-screen flex">
 
-    <!-- 🔴 Login Screen 🔴 -->
+    <!-- Login Screen -->
     <div id="login-screen" class="fixed inset-0 bg-slate-900 flex items-center justify-center z-50">
         <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md text-center">
             <img src="/assets/logo.jpeg" class="w-20 h-20 mx-auto rounded-full mb-4">
             <h2 class="text-2xl font-black text-[#1a0b5e] mb-6 uppercase">Admin Login</h2>
             <input type="text" id="username" placeholder="Username" class="w-full px-4 py-3 border rounded mb-4 focus:outline-none focus:border-blue-500">
             <input type="password" id="password" placeholder="Password" class="w-full px-4 py-3 border rounded mb-6 focus:outline-none focus:border-blue-500">
-            <button onclick="login()" class="w-full bg-[#1a0b5e] text-white py-3 rounded font-bold hover:bg-blue-800 transition">LOGIN</button>
+            <button onclick="login()" id="login-btn" class="w-full bg-[#1a0b5e] text-white py-3 rounded font-bold hover:bg-blue-800 transition">LOGIN</button>
             <p id="login-error" class="text-red-500 mt-3 font-bold hidden">Invalid ID or Password!</p>
         </div>
     </div>
 
-    <!-- 🟢 Admin Dashboard 🟢 -->
+    <!-- Admin Dashboard -->
     <aside class="w-64 bg-[#111827] text-white flex flex-col hidden" id="sidebar">
         <div class="p-6 text-center border-b border-slate-700">
             <h2 class="text-xl font-black text-blue-400">IBIT ADMIN</h2>
         </div>
         <nav class="flex-grow p-4 space-y-2">
             <a href="#" class="block px-4 py-3 bg-blue-600 rounded text-sm font-bold">📢 Notice Panel</a>
-            <a href="#" class="block px-4 py-3 hover:bg-slate-800 rounded text-sm font-bold text-slate-400 transition">⚙️ Future Feature</a>
+            <a href="#" class="block px-4 py-3 hover:bg-slate-800 rounded text-sm font-bold text-slate-400 transition">⚙️ Future Features</a>
         </nav>
         <div class="p-4"><button onclick="logout()" class="w-full text-red-400 font-bold hover:text-red-300 text-sm">Logout</button></div>
     </aside>
@@ -41,57 +50,114 @@
             </button>
         </div>
 
-        <!-- Notice List -->
+        <!-- Notice List View -->
         <div id="notice-list-view" class="bg-white rounded-lg shadow-sm border border-slate-200">
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="bg-slate-50 text-slate-500 text-sm uppercase border-b border-slate-200">
-                        <th class="p-4 font-bold">Title</th>
+                        <th class="p-4 font-bold">Notice Title</th>
                         <th class="p-4 font-bold w-32">Date</th>
                         <th class="p-4 font-bold w-16 text-center">Action</th>
                     </tr>
                 </thead>
                 <tbody id="admin-notices" class="divide-y divide-slate-100">
-                    <!-- Notices will load here -->
+                    <!-- Data will load here -->
                 </tbody>
             </table>
         </div>
 
-        <!-- Add Notice Editor -->
+        <!-- Add Notice Editor View -->
         <div id="notice-editor-view" class="hidden bg-white rounded-lg shadow-sm border border-slate-200 p-6">
-            <input type="text" id="n-title" class="w-full px-4 py-2 border rounded mb-4 text-lg font-semibold" placeholder="Notice Title">
-            <div id="editor-container" class="h-64 mb-4"></div>
+            <input type="text" id="n-title" class="w-full px-4 py-3 border border-slate-300 rounded mb-4 text-lg font-bold focus:border-blue-500 focus:outline-none" placeholder="Enter Notice Title...">
             
-            <div class="flex items-center gap-2 mb-6 bg-slate-50 p-4 border rounded">
-                <input type="checkbox" id="auto-delete" onchange="document.getElementById('date-box').classList.toggle('hidden')">
-                <label class="font-bold text-sm">Auto-Delete Timer</label>
-                <input type="date" id="date-box" class="hidden px-2 py-1 border rounded text-sm ml-4">
+            <div class="mb-4">
+                <div class="flex justify-between items-center mb-2">
+                    <label class="font-bold text-slate-700">Notice Content</label>
+                    <button id="toggle-html-btn" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-3 py-1.5 rounded font-bold transition">
+                        &lt;/&gt; Edit HTML
+                    </button>
+                </div>
+                
+                <!-- WordPress Style Editor -->
+                <div id="editor-container" class="h-64 bg-white"></div>
+                
+                <!-- Raw HTML Textarea (Hidden by default) -->
+                <textarea id="html-editor" class="hidden w-full h-72 p-4 border border-slate-300 rounded font-mono text-sm focus:border-blue-500 focus:outline-none bg-slate-50" placeholder="Paste your custom HTML code here..."></textarea>
+            </div>
+            
+            <!-- Auto Delete Timer -->
+            <div class="flex items-center gap-2 mb-6 bg-slate-50 p-4 border border-slate-200 rounded">
+                <input type="checkbox" id="auto-delete" class="w-4 h-4 cursor-pointer" onchange="document.getElementById('date-box').classList.toggle('hidden')">
+                <label for="auto-delete" class="font-bold text-sm text-slate-700 cursor-pointer">Enable Auto-Delete Timer</label>
+                <input type="date" id="date-box" class="hidden px-2 py-1 border border-slate-300 rounded text-sm ml-4">
             </div>
 
+            <!-- Action Buttons -->
             <div class="flex justify-end gap-3">
-                <button onclick="hideEditor()" class="px-6 py-2 border rounded font-bold hover:bg-slate-50">Cancel</button>
-                <button onclick="publishNotice()" class="px-6 py-2 bg-green-600 text-white rounded font-bold hover:bg-green-700">Publish</button>
+                <button onclick="hideEditor()" class="px-6 py-2 border border-slate-300 rounded font-bold hover:bg-slate-50 text-slate-600 transition">Cancel</button>
+                <button onclick="publishNotice()" id="publish-btn" class="px-6 py-2 bg-green-600 text-white rounded font-bold hover:bg-green-700 transition shadow">Publish Notice</button>
             </div>
         </div>
     </main>
 
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script>
-        // Check if cookie exists (basic check, server does real auth)
-        if(document.cookie.includes('admin_auth=true')) {
-            showDashboard();
-        }
+        // Check Login Cookie
+        if(document.cookie.includes('admin_auth=true')) { showDashboard(); }
 
+        // Init Quill Editor
         var quill = new Quill('#editor-container', {
             theme: 'snow',
-            modules: { toolbar: [ [{ 'header': [1,2,3,false] }], ['bold', 'italic', 'underline'], [{'color':[]}], [{ 'list': 'ordered'}, { 'list': 'bullet' }], ['link', 'clean'] ] }
+            placeholder: 'Type notice content or format it here...',
+            modules: { toolbar: [ [{ 'header': [1,2,3,false] }], ['bold', 'italic', 'underline', 'strike'], [{'color':[]}, {'background':[]}], [{ 'list': 'ordered'}, { 'list': 'bullet' }], [{ 'align': [] }], ['link', 'image', 'video'], ['clean'] ] }
         });
 
+        // Add Tooltips (Titles) to Quill Buttons
+        setTimeout(() => {
+            document.querySelectorAll('.ql-toolbar button, .ql-toolbar .ql-picker').forEach(icon => {
+                let name = icon.className.replace('ql-', '').replace('ql-active', '').trim().split(' ')[0];
+                icon.setAttribute('title', name.charAt(0).toUpperCase() + name.slice(1));
+            });
+        }, 500);
+
+        // Custom HTML Toggle Logic
+        let isHtmlMode = false;
+        document.getElementById('toggle-html-btn').addEventListener('click', function() {
+            isHtmlMode = !isHtmlMode;
+            const toolbar = document.querySelector('.ql-toolbar');
+            const htmlEditor = document.getElementById('html-editor');
+            const visualEditor = document.getElementById('editor-container');
+
+            if (isHtmlMode) {
+                htmlEditor.value = quill.root.innerHTML; // Copy to HTML
+                toolbar.style.display = 'none';
+                visualEditor.style.display = 'none';
+                htmlEditor.classList.remove('hidden');
+                this.innerHTML = '👁️ View Visual Editor';
+                this.classList.replace('bg-slate-200', 'bg-blue-600');
+                this.classList.replace('text-slate-700', 'text-white');
+            } else {
+                quill.root.innerHTML = htmlEditor.value; // Copy back to Visual
+                toolbar.style.display = 'block';
+                visualEditor.style.display = 'block';
+                htmlEditor.classList.add('hidden');
+                this.innerHTML = '&lt;/&gt; Edit HTML';
+                this.classList.replace('bg-blue-600', 'bg-slate-200');
+                this.classList.replace('text-white', 'text-slate-700');
+            }
+        });
+
+        // Login API
         async function login() {
+            const btn = document.getElementById('login-btn');
+            btn.innerText = "Checking...";
             const u = document.getElementById('username').value;
             const p = document.getElementById('password').value;
-            const res = await fetch('/api/auth', { method: 'POST', body: JSON.stringify({username: u, password: p}) });
-            if(res.ok) { showDashboard(); } else { document.getElementById('login-error').classList.remove('hidden'); }
+            try {
+                const res = await fetch('/api/auth', { method: 'POST', body: JSON.stringify({username: u, password: p}) });
+                if(res.ok) { showDashboard(); } else { document.getElementById('login-error').classList.remove('hidden'); }
+            } catch(e) { alert("API Error"); }
+            btn.innerText = "LOGIN";
         }
 
         function logout() {
@@ -120,46 +186,74 @@
             document.getElementById('page-title').innerText = "Notice Management";
             document.getElementById('n-title').value = '';
             quill.root.innerHTML = '';
+            document.getElementById('html-editor').value = '';
         }
 
+        // Fetch Notices
         async function loadNotices() {
-            const res = await fetch('/api/notices');
-            const data = await res.json();
             const tbody = document.getElementById('admin-notices');
-            tbody.innerHTML = '';
-            data.forEach(n => {
-                const date = new Date(n.created_at).toLocaleDateString();
-                tbody.innerHTML += `
-                    <tr class="hover:bg-slate-50">
-                        <td class="p-4 font-semibold">${n.title}</td>
-                        <td class="p-4 text-sm">${date}</td>
-                        <td class="p-4 text-center">
-                            <button onclick="deleteNotice(${n.id})" class="text-red-500 font-bold hover:underline">Delete</button>
-                        </td>
-                    </tr>`;
-            });
+            tbody.innerHTML = '<tr><td colspan="3" class="p-4 text-center">Loading Data...</td></tr>';
+            try {
+                const res = await fetch('/api/notices');
+                const data = await res.json();
+                tbody.innerHTML = '';
+                if(data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="3" class="p-4 text-center text-slate-500">No notices found.</td></tr>';
+                    return;
+                }
+                data.forEach(n => {
+                    const date = new Date(n.created_at).toLocaleDateString('en-GB');
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-slate-50 border-b border-slate-100 last:border-b-0">
+                            <td class="p-4 font-semibold text-slate-700">${n.title}</td>
+                            <td class="p-4 text-sm text-slate-500">${date}</td>
+                            <td class="p-4 text-center">
+                                <button onclick="deleteNotice(${n.id})" class="bg-red-50 hover:bg-red-100 text-red-600 font-bold px-3 py-1 rounded transition text-xs">Delete</button>
+                            </td>
+                        </tr>`;
+                });
+            } catch(e) {
+                tbody.innerHTML = '<tr><td colspan="3" class="p-4 text-center text-red-500 font-bold">Failed to connect to database.</td></tr>';
+            }
         }
 
+        // Publish Notice API
         async function publishNotice() {
             const title = document.getElementById('n-title').value;
-            const content = quill.root.innerHTML;
+            if(!title) { alert('Notice title is required!'); return; }
+
+            let content = isHtmlMode ? document.getElementById('html-editor').value : quill.root.innerHTML;
             const autoDel = document.getElementById('auto-delete').checked ? document.getElementById('date-box').value : null;
 
-            await fetch('/api/notices', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ title, content, auto_delete_date: autoDel })
-            });
-            hideEditor();
-            loadNotices();
+            const btn = document.getElementById('publish-btn');
+            btn.innerText = "Publishing...";
+
+            try {
+                const res = await fetch('/api/notices', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title, content, auto_delete_date: autoDel })
+                });
+                
+                if(res.ok) {
+                    hideEditor();
+                    loadNotices();
+                } else {
+                    alert('Failed to publish notice. Authentication error.');
+                }
+            } catch(e) {
+                alert('Connection Error!');
+            }
+            btn.innerText = "Publish Notice";
         }
 
+        // Delete Notice API
         async function deleteNotice(id) {
-            if(confirm("Are you sure?")) {
+            if(confirm("Are you absolutely sure you want to delete this notice?")) {
                 await fetch('/api/notices?id=' + id, { method: 'DELETE' });
                 loadNotices();
             }
         }
     </script>
 </body>
-</html>
+</html>s
