@@ -7,283 +7,310 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <style>
-        /* Quill Toolbar Tooltips Fix */
         .ql-toolbar button:hover::after, .ql-toolbar .ql-picker:hover::after {
-            content: attr(title);
-            position: absolute; top: -25px; left: 50%; transform: translateX(-50%);
-            background: #111827; color: white; padding: 2px 6px; border-radius: 4px;
-            font-size: 11px; white-space: nowrap; z-index: 10; pointer-events: none;
+            content: attr(title); position: absolute; top: -25px; left: 50%; transform: translateX(-50%);
+            background: #111827; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px; white-space: nowrap; z-index: 10; pointer-events: none;
         }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800 font-sans h-screen flex">
+<body class="bg-slate-50 text-slate-800 font-sans h-screen flex flex-col" onclick="closeAllDropdowns(event)">
+
+    <header class="bg-[#1a0b5e] text-white py-4 px-6 shadow-md z-20 flex justify-between items-center hidden" id="top-header">
+        <div>
+            <h1 class="text-xl font-black uppercase tracking-wider">IBIT-ISLAMI BANK INSTITUTE OF TECHNOLOGY, SYLHET</h1>
+            <p class="text-xs text-blue-200">Admin Control Panel</p>
+        </div>
+        <button onclick="logout()" class="text-sm font-bold bg-white text-[#1a0b5e] px-4 py-2 rounded hover:bg-slate-200 transition">Logout</button>
+    </header>
 
     <div id="login-screen" class="fixed inset-0 bg-slate-900 flex items-center justify-center z-50">
         <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md text-center">
-            <img src="/assets/logo.jpeg" class="w-20 h-20 mx-auto rounded-full mb-4">
-            <h2 class="text-2xl font-black text-[#1a0b5e] mb-6 uppercase">Admin Login</h2>
-            <input type="text" id="username" placeholder="Username" class="w-full px-4 py-3 border rounded mb-4 focus:outline-none focus:border-blue-500">
-            <input type="password" id="password" placeholder="Password" class="w-full px-4 py-3 border rounded mb-6 focus:outline-none focus:border-blue-500">
-            <button onclick="login()" id="login-btn" class="w-full bg-[#1a0b5e] text-white py-3 rounded font-bold hover:bg-blue-800 transition">LOGIN</button>
-            <p id="login-error" class="text-red-500 mt-3 font-bold hidden">Invalid ID or Password!</p>
+            <h2 class="text-2xl font-black text-[#1a0b5e] mb-6 uppercase border-b-2 border-slate-200 pb-4">Admin Login</h2>
+            <input type="text" id="username" placeholder="Username" class="w-full px-4 py-3 border border-slate-300 rounded mb-4 focus:outline-none focus:border-blue-500">
+            <input type="password" id="password" placeholder="Password" class="w-full px-4 py-3 border border-slate-300 rounded mb-6 focus:outline-none focus:border-blue-500">
+            <button onclick="login()" id="login-btn" class="w-full bg-[#1a0b5e] text-white py-3 rounded font-bold hover:bg-blue-900 transition">LOGIN</button>
+            <p id="login-error" class="text-red-500 mt-3 font-bold hidden">Invalid ID or Password</p>
         </div>
     </div>
 
-    <aside class="w-64 bg-[#111827] text-white flex flex-col hidden" id="sidebar">
-        <div class="p-6 text-center border-b border-slate-700">
-            <h2 class="text-xl font-black text-blue-400">IBIT ADMIN</h2>
-        </div>
-        <nav class="flex-grow p-4 space-y-2">
-            <a href="#" class="block px-4 py-3 bg-blue-600 rounded text-sm font-bold">📢 Notice Panel</a>
-            <a href="#" class="block px-4 py-3 hover:bg-slate-800 rounded text-sm font-bold text-slate-400 transition">⚙️ Future Features</a>
-        </nav>
-        <div class="p-4"><button onclick="logout()" class="w-full text-red-400 font-bold hover:text-red-300 text-sm">Logout</button></div>
-    </aside>
+    <div class="flex flex-grow overflow-hidden">
+        <aside class="w-64 bg-slate-900 text-white flex flex-col hidden shadow-xl z-10" id="sidebar">
+            <nav class="flex-grow p-4 space-y-2 mt-4">
+                <button onclick="showDashboard()" id="nav-dash" class="w-full text-left px-4 py-3 rounded text-sm font-bold bg-blue-700 text-white transition">Dashboard</button>
+                <button onclick="showNoticePanel()" id="nav-notice" class="w-full text-left px-4 py-3 hover:bg-slate-800 rounded text-sm font-bold text-slate-300 transition">Notice Board</button>
+            </nav>
+        </aside>
 
-    <main class="flex-grow p-8 overflow-y-auto hidden" id="main-content">
-        <div class="flex justify-between items-center mb-8">
-            <h1 class="text-3xl font-bold text-slate-800" id="page-title">Notice Management</h1>
-            <button onclick="showEditor()" id="add-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded font-bold transition shadow">
-                + Add New Notice
-            </button>
-        </div>
-
-        <div id="notice-list-view" class="bg-white rounded-lg shadow-sm border border-slate-200">
-            <table class="w-full text-left border-collapse">
-                <thead>
-                    <tr class="bg-slate-50 text-slate-500 text-sm uppercase border-b border-slate-200">
-                        <th class="p-4 font-bold">Notice Title</th>
-                        <th class="p-4 font-bold w-32">Date</th>
-                        <th class="p-4 font-bold w-16 text-center">Action</th>
-                    </tr>
-                </thead>
-                <tbody id="admin-notices" class="divide-y divide-slate-100">
-                    </tbody>
-            </table>
-        </div>
-
-        <div id="notice-editor-view" class="hidden bg-white rounded-lg shadow-sm border border-slate-200 p-6">
-            <input type="text" id="n-title" class="w-full px-4 py-3 border border-slate-300 rounded mb-4 text-lg font-bold focus:border-blue-500 focus:outline-none" placeholder="Enter Notice Title...">
+        <main class="flex-grow p-8 overflow-y-auto hidden relative" id="main-content">
             
-            <div class="mb-4">
-                <div class="flex justify-between items-center mb-2">
-                    <label class="font-bold text-slate-700">Notice Content</label>
-                    <button id="toggle-html-btn" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-3 py-1.5 rounded font-bold transition">
-                        &lt;/&gt; Edit HTML
+            <div id="dashboard-view">
+                <div class="bg-white p-10 rounded-lg shadow border border-slate-200 text-center mt-10">
+                    <h2 class="text-3xl font-black text-[#1a0b5e] mb-2 uppercase">Welcome to IBIT Admin Panel</h2>
+                    <p class="text-slate-500">Select an option from the sidebar to manage website content.</p>
+                </div>
+            </div>
+
+            <div id="notice-panel-view" class="hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-2xl font-bold text-slate-800">Notice Management</h1>
+                    <button onclick="showEditor()" class="bg-[#1a0b5e] hover:bg-blue-900 text-white px-5 py-2.5 rounded font-bold transition shadow text-sm">
+                        + Create Notice
                     </button>
                 </div>
-                
-                <div id="editor-container" class="h-64 bg-white"></div>
-                
-                <textarea id="html-editor" class="hidden w-full h-72 p-4 border border-slate-300 rounded font-mono text-sm focus:border-blue-500 focus:outline-none bg-slate-50" placeholder="Paste your custom HTML code here..."></textarea>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 bg-slate-50 p-5 border border-slate-200 rounded-lg">
-                <div>
-                    <label class="font-bold text-sm text-slate-700 block mb-2">📎 Attach Original PDF (Optional)</label>
-                    <input type="file" id="pdf-upload" accept="application/pdf" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-bold file:bg-[#1a0b5e] file:text-white hover:file:bg-blue-800 transition cursor-pointer">
-                    <p class="text-xs text-slate-400 mt-1">If uploaded, users will download this PDF instead of generated one.</p>
-                </div>
-                <div>
-                    <div class="flex items-center gap-2 mb-2">
-                        <input type="checkbox" id="auto-delete" class="w-4 h-4 cursor-pointer" onchange="document.getElementById('date-box').classList.toggle('hidden')">
-                        <label for="auto-delete" class="font-bold text-sm text-slate-700 cursor-pointer">Enable Auto-Delete (Date & Time)</label>
-                    </div>
-                    <input type="datetime-local" id="date-box" class="hidden w-full px-3 py-2 border border-slate-300 rounded text-sm focus:outline-none focus:border-blue-500 font-bold text-slate-700">
+
+                <div class="bg-white rounded-lg shadow-sm border border-slate-200 pb-20">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-600 text-sm uppercase border-b border-slate-200">
+                                <th class="p-4 font-bold">Notice Title</th>
+                                <th class="p-4 font-bold w-32">Date</th>
+                                <th class="p-4 font-bold w-16 text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-notices" class="divide-y divide-slate-100">
+                            </tbody>
+                    </table>
                 </div>
             </div>
 
-            <div class="flex justify-end gap-3">
-                <button onclick="hideEditor()" class="px-6 py-2 border border-slate-300 rounded font-bold hover:bg-slate-50 text-slate-600 transition">Cancel</button>
-                <button onclick="publishNotice()" id="publish-btn" class="px-6 py-2 bg-green-600 text-white rounded font-bold hover:bg-green-700 transition shadow">Publish Notice</button>
+            <div id="notice-editor-view" class="hidden bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+                <h2 id="editor-title" class="text-xl font-bold text-slate-800 mb-6 border-b border-slate-100 pb-4">Create Notice</h2>
+                
+                <input type="hidden" id="edit-id">
+                <input type="text" id="n-title" class="w-full px-4 py-3 border border-slate-300 rounded mb-4 text-lg font-bold focus:border-[#1a0b5e] focus:outline-none" placeholder="Notice Title">
+                
+                <div class="mb-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="font-bold text-slate-700 text-sm">Notice Content</label>
+                        <button id="toggle-html-btn" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-3 py-1.5 rounded font-bold transition">View Source / HTML</button>
+                    </div>
+                    <div id="editor-container" class="h-64 bg-white"></div>
+                    <textarea id="html-editor" class="hidden w-full h-72 p-4 border border-slate-300 rounded font-mono text-sm focus:border-[#1a0b5e] focus:outline-none bg-slate-50"></textarea>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 bg-slate-50 p-5 border border-slate-200 rounded-lg">
+                    <div id="upload-box">
+                        <label class="font-bold text-sm text-slate-700 block mb-2">Attach PDF Document</label>
+                        <input type="file" id="pdf-upload" accept="application/pdf" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-bold file:bg-[#1a0b5e] file:text-white hover:file:bg-blue-800 transition cursor-pointer">
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <input type="checkbox" id="auto-delete" class="w-4 h-4 cursor-pointer" onchange="document.getElementById('date-box').classList.toggle('hidden')">
+                            <label for="auto-delete" class="font-bold text-sm text-slate-700 cursor-pointer">Set Auto-Delete Timer</label>
+                        </div>
+                        <input type="datetime-local" id="date-box" class="hidden w-full px-3 py-2 border border-slate-300 rounded text-sm focus:outline-none focus:border-[#1a0b5e] font-bold text-slate-700">
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-4 border-t border-slate-100">
+                    <button onclick="showNoticePanel()" class="px-6 py-2 border border-slate-300 rounded font-bold hover:bg-slate-50 text-slate-600 transition">Cancel</button>
+                    <button onclick="saveNotice()" id="publish-btn" class="px-6 py-2 bg-green-600 text-white rounded font-bold hover:bg-green-700 transition shadow">Publish</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="delete-modal" class="hidden fixed inset-0 bg-slate-900 bg-opacity-60 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-sm text-center">
+            <h3 class="text-xl font-bold text-slate-800 mb-2">Delete Notice?</h3>
+            <p class="text-sm text-slate-500 mb-6">This action cannot be undone. Are you sure you want to proceed?</p>
+            <input type="hidden" id="delete-id">
+            <div class="flex justify-center gap-3">
+                <button onclick="closeDeleteModal()" class="px-4 py-2 bg-slate-200 text-slate-700 font-bold rounded hover:bg-slate-300">Cancel</button>
+                <button onclick="confirmDelete()" id="confirm-del-btn" class="px-4 py-2 bg-red-600 text-white font-bold rounded hover:bg-red-700">Yes, Delete</button>
             </div>
         </div>
-    </main>
+    </div>
 
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script>
-        // Check Login Cookie
-        if(document.cookie.includes('admin_auth=true')) { showDashboard(); }
+        let noticeData = [];
+        if(document.cookie.includes('admin_auth=true')) { unlockUI(); }
 
-        // Init Quill Editor
         var quill = new Quill('#editor-container', {
             theme: 'snow',
-            placeholder: 'Type notice content or format it here...',
             modules: { toolbar: [ [{ 'header': [1,2,3,false] }], ['bold', 'italic', 'underline', 'strike'], [{'color':[]}, {'background':[]}], [{ 'list': 'ordered'}, { 'list': 'bullet' }], [{ 'align': [] }], ['link', 'image', 'video'], ['clean'] ] }
         });
 
-        // Add Tooltips (Titles) to Quill Buttons
-        setTimeout(() => {
-            document.querySelectorAll('.ql-toolbar button, .ql-toolbar .ql-picker').forEach(icon => {
-                let name = icon.className.replace('ql-', '').replace('ql-active', '').trim().split(' ')[0];
-                icon.setAttribute('title', name.charAt(0).toUpperCase() + name.slice(1));
-            });
-        }, 500);
-
-        // Custom HTML Toggle Logic
         let isHtmlMode = false;
         document.getElementById('toggle-html-btn').addEventListener('click', function() {
             isHtmlMode = !isHtmlMode;
-            const toolbar = document.querySelector('.ql-toolbar');
-            const htmlEditor = document.getElementById('html-editor');
-            const visualEditor = document.getElementById('editor-container');
-
+            const tb = document.querySelector('.ql-toolbar');
+            const he = document.getElementById('html-editor');
+            const ve = document.getElementById('editor-container');
             if (isHtmlMode) {
-                htmlEditor.value = quill.root.innerHTML; 
-                toolbar.style.display = 'none';
-                visualEditor.style.display = 'none';
-                htmlEditor.classList.remove('hidden');
-                this.innerHTML = '👁️ View Visual Editor';
-                this.classList.replace('bg-slate-200', 'bg-blue-600');
-                this.classList.replace('text-slate-700', 'text-white');
+                he.value = quill.root.innerHTML; tb.style.display = 'none'; ve.style.display = 'none'; he.classList.remove('hidden');
+                this.innerHTML = 'Switch to Visual Editor'; this.classList.replace('bg-slate-200', 'bg-[#1a0b5e]'); this.classList.replace('text-slate-700', 'text-white');
             } else {
-                quill.root.innerHTML = htmlEditor.value; 
-                toolbar.style.display = 'block';
-                visualEditor.style.display = 'block';
-                htmlEditor.classList.add('hidden');
-                this.innerHTML = '&lt;/&gt; Edit HTML';
-                this.classList.replace('bg-blue-600', 'bg-slate-200');
-                this.classList.replace('text-white', 'text-slate-700');
+                quill.root.innerHTML = he.value; tb.style.display = 'block'; ve.style.display = 'block'; he.classList.add('hidden');
+                this.innerHTML = 'View Source / HTML'; this.classList.replace('bg-[#1a0b5e]', 'bg-slate-200'); this.classList.replace('text-white', 'text-slate-700');
             }
         });
 
-        // Login API
         async function login() {
             const btn = document.getElementById('login-btn');
-            btn.innerText = "Checking...";
-            const u = document.getElementById('username').value;
-            const p = document.getElementById('password').value;
+            btn.innerText = "Authenticating...";
+            const u = document.getElementById('username').value, p = document.getElementById('password').value;
             try {
                 const res = await fetch('/api/auth', { method: 'POST', body: JSON.stringify({username: u, password: p}) });
-                if(res.ok) { showDashboard(); } else { document.getElementById('login-error').classList.remove('hidden'); }
+                if(res.ok) { unlockUI(); } else { document.getElementById('login-error').classList.remove('hidden'); }
             } catch(e) { alert("API Error"); }
             btn.innerText = "LOGIN";
         }
 
-        function logout() {
-            document.cookie = "admin_auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            location.reload();
+        function logout() { document.cookie = "admin_auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; location.reload(); }
+
+        function unlockUI() {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('top-header').classList.remove('hidden');
+            document.getElementById('sidebar').classList.remove('hidden');
+            document.getElementById('main-content').classList.remove('hidden');
+            showDashboard();
+            fetchNotices();
+        }
+
+        function setActiveNav(id) {
+            document.getElementById('nav-dash').className = "w-full text-left px-4 py-3 rounded text-sm font-bold transition hover:bg-slate-800 text-slate-300";
+            document.getElementById('nav-notice').className = "w-full text-left px-4 py-3 rounded text-sm font-bold transition hover:bg-slate-800 text-slate-300";
+            document.getElementById(id).className = "w-full text-left px-4 py-3 rounded text-sm font-bold bg-blue-700 text-white transition";
         }
 
         function showDashboard() {
-            document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('sidebar').classList.remove('hidden');
-            document.getElementById('main-content').classList.remove('hidden');
-            loadNotices();
-        }
-
-        function showEditor() {
-            document.getElementById('notice-list-view').classList.add('hidden');
-            document.getElementById('notice-editor-view').classList.remove('hidden');
-            document.getElementById('add-btn').classList.add('hidden');
-            document.getElementById('page-title').innerText = "Create Notice";
-        }
-
-        function hideEditor() {
-            document.getElementById('notice-list-view').classList.remove('hidden');
+            setActiveNav('nav-dash');
+            document.getElementById('dashboard-view').classList.remove('hidden');
+            document.getElementById('notice-panel-view').classList.add('hidden');
             document.getElementById('notice-editor-view').classList.add('hidden');
-            document.getElementById('add-btn').classList.remove('hidden');
-            document.getElementById('page-title').innerText = "Notice Management";
+        }
+
+        function showNoticePanel() {
+            setActiveNav('nav-notice');
+            document.getElementById('dashboard-view').classList.add('hidden');
+            document.getElementById('notice-panel-view').classList.remove('hidden');
+            document.getElementById('notice-editor-view').classList.add('hidden');
+            fetchNotices();
+        }
+
+        function showEditor(isEdit = false, id = null) {
+            document.getElementById('notice-panel-view').classList.add('hidden');
+            document.getElementById('notice-editor-view').classList.remove('hidden');
+            
             document.getElementById('n-title').value = '';
-            quill.root.innerHTML = '';
-            document.getElementById('html-editor').value = '';
-            document.getElementById('pdf-upload').value = '';
+            quill.root.innerHTML = ''; document.getElementById('html-editor').value = '';
             document.getElementById('auto-delete').checked = false;
             document.getElementById('date-box').classList.add('hidden');
             document.getElementById('date-box').value = '';
+            document.getElementById('pdf-upload').value = '';
+
+            if(isEdit) {
+                document.getElementById('editor-title').innerText = "Edit Notice";
+                document.getElementById('publish-btn').innerText = "Update";
+                document.getElementById('upload-box').classList.add('hidden'); // PDF update locked for simplicity
+                document.getElementById('edit-id').value = id;
+                
+                const item = noticeData.find(x => x.id === id);
+                if(item) {
+                    document.getElementById('n-title').value = item.title;
+                    quill.root.innerHTML = item.content;
+                    if(item.auto_delete_date) {
+                        document.getElementById('auto-delete').checked = true;
+                        document.getElementById('date-box').classList.remove('hidden');
+                        document.getElementById('date-box').value = item.auto_delete_date.substring(0, 16);
+                    }
+                }
+            } else {
+                document.getElementById('editor-title').innerText = "Create Notice";
+                document.getElementById('publish-btn').innerText = "Publish";
+                document.getElementById('upload-box').classList.remove('hidden');
+                document.getElementById('edit-id').value = '';
+            }
         }
 
-        // Fetch Notices
-        async function loadNotices() {
+        async function fetchNotices() {
             const tbody = document.getElementById('admin-notices');
-            tbody.innerHTML = '<tr><td colspan="3" class="p-4 text-center">Loading Data...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="3" class="p-4 text-center">Loading...</td></tr>';
             try {
                 const res = await fetch('/api/notices');
-                const data = await res.json();
+                noticeData = await res.json();
                 tbody.innerHTML = '';
-                if(data.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="3" class="p-4 text-center text-slate-500">No notices found.</td></tr>';
-                    return;
-                }
-                data.forEach(n => {
+                if(noticeData.length === 0) { tbody.innerHTML = '<tr><td colspan="3" class="p-4 text-center text-slate-500">No data found.</td></tr>'; return; }
+                
+                noticeData.forEach(n => {
                     const date = new Date(n.created_at).toLocaleDateString('en-GB');
                     tbody.innerHTML += `
                         <tr class="hover:bg-slate-50 border-b border-slate-100 last:border-b-0">
                             <td class="p-4 font-semibold text-slate-700">${n.title}</td>
                             <td class="p-4 text-sm text-slate-500">${date}</td>
-                            <td class="p-4 text-center">
-                                <button onclick="deleteNotice(${n.id})" class="bg-red-50 hover:bg-red-100 text-red-600 font-bold px-3 py-1 rounded transition text-xs">Delete</button>
+                            <td class="p-4 text-center relative">
+                                <button onclick="toggleDrop(event, ${n.id})" class="text-slate-400 hover:text-slate-700 font-bold px-2 py-1 text-lg leading-none focus:outline-none">&#8942;</button>
+                                <div id="drop-${n.id}" class="dropdown-menu hidden absolute right-12 top-2 w-32 bg-white shadow-lg border border-slate-200 rounded text-left z-50">
+                                    <button onclick="showEditor(true, ${n.id})" class="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 border-b border-slate-100 font-semibold">Edit Notice</button>
+                                    <button onclick="openDeleteModal(${n.id})" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 font-semibold">Delete</button>
+                                </div>
                             </td>
                         </tr>`;
                 });
-            } catch(e) {
-                tbody.innerHTML = '<tr><td colspan="3" class="p-4 text-center text-red-500 font-bold">Failed to connect to database.</td></tr>';
-            }
+            } catch(e) { tbody.innerHTML = '<tr><td colspan="3" class="p-4 text-center text-red-500 font-bold">System Error</td></tr>'; }
         }
 
-        // 🔥 Publish Notice API (Handles File Upload & DateTime) 🔥
-        async function publishNotice() {
-            const title = document.getElementById('n-title').value;
-            if(!title) { alert('Notice title is required!'); return; }
+        function toggleDrop(e, id) {
+            e.stopPropagation();
+            const menus = document.querySelectorAll('.dropdown-menu');
+            menus.forEach(m => { if(m.id !== 'drop-'+id) m.classList.add('hidden'); });
+            document.getElementById('drop-'+id).classList.toggle('hidden');
+        }
 
-            let content = isHtmlMode ? document.getElementById('html-editor').value : quill.root.innerHTML;
-            
-            // Get DateTime standard format
+        function closeAllDropdowns(e) {
+            document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.add('hidden'));
+        }
+
+        async function saveNotice() {
+            const title = document.getElementById('n-title').value;
+            if(!title) { alert('Title required!'); return; }
+            const content = isHtmlMode ? document.getElementById('html-editor').value : quill.root.innerHTML;
+            const editId = document.getElementById('edit-id').value;
             let autoDel = null;
             if(document.getElementById('auto-delete').checked) {
-                const dateVal = document.getElementById('date-box').value;
-                if(dateVal) autoDel = new Date(dateVal).toISOString();
+                const dv = document.getElementById('date-box').value;
+                if(dv) autoDel = new Date(dv).toISOString();
             }
 
             const btn = document.getElementById('publish-btn');
             btn.innerText = "Processing...";
 
             try {
-                let pdf_url = null;
+                let reqMethod = editId ? 'PUT' : 'POST';
+                let payload = { title, content, auto_delete_date: autoDel };
+                if(editId) payload.id = editId;
+
+                // PDF Logic (Only on create)
                 const fileInput = document.getElementById('pdf-upload');
-                
-                // Upload PDF to R2 if selected
-                if(fileInput.files.length > 0) {
-                    btn.innerText = "Uploading PDF...";
-                    const formData = new FormData();
-                    formData.append('file', fileInput.files[0]);
-                    
-                    const upRes = await fetch('/api/upload', { method: 'POST', body: formData });
-                    
-                    if(!upRes.ok) {
-                        alert("PDF Upload failed! Check your R2 Binding in Cloudflare.");
-                        btn.innerText = "Publish Notice";
-                        return;
-                    }
-                    const upData = await upRes.json();
-                    pdf_url = upData.file_url;
+                if(!editId && fileInput.files.length > 0) {
+                    btn.innerText = "Uploading...";
+                    const fd = new FormData(); fd.append('file', fileInput.files[0]);
+                    const upRes = await fetch('/api/upload', { method: 'POST', body: fd });
+                    if(upRes.ok) { const upData = await upRes.json(); payload.pdf_url = upData.file_url; }
                 }
 
-                btn.innerText = "Saving to Database...";
-                const res = await fetch('/api/notices', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ title, content, auto_delete_date: autoDel, pdf_url })
-                });
-                
-                if(res.ok) {
-                    hideEditor();
-                    loadNotices();
-                } else {
-                    alert('Failed to publish notice. Database error.');
-                }
-            } catch(e) {
-                alert('Connection Error!');
-            }
-            btn.innerText = "Publish Notice";
+                btn.innerText = "Saving...";
+                const res = await fetch('/api/notices', { method: reqMethod, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                if(res.ok) { showNoticePanel(); } else { alert('Database error.'); }
+            } catch(e) { alert('Connection Error!'); }
         }
 
-        // Delete Notice API
-        async function deleteNotice(id) {
-            if(confirm("Are you absolutely sure you want to delete this notice?")) {
-                await fetch('/api/notices?id=' + id, { method: 'DELETE' });
-                loadNotices();
-            }
+        function openDeleteModal(id) {
+            document.getElementById('delete-id').value = id;
+            document.getElementById('delete-modal').classList.remove('hidden');
+        }
+        function closeDeleteModal() { document.getElementById('delete-modal').classList.add('hidden'); }
+        
+        async function confirmDelete() {
+            const id = document.getElementById('delete-id').value;
+            const btn = document.getElementById('confirm-del-btn');
+            btn.innerText = "Deleting...";
+            await fetch('/api/notices?id=' + id, { method: 'DELETE' });
+            closeDeleteModal();
+            btn.innerText = "Yes, Delete";
+            fetchNotices();
         }
     </script>
 </body>
