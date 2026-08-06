@@ -1,7 +1,0 @@
-CREATE TABLE IF NOT EXISTS notices (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT NOT NULL,
-    description TEXT,
-    pdf_url TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-);
