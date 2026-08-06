@@ -7,7 +7,7 @@ export async function onRequestPost(context) {
     const user = await stmt.bind(username, password).first();
 
     if (user) {
-        // HttpOnly রিমুভ করা হয়েছে যাতে ফ্রন্টএন্ড কুকি রিড করতে পারে
+        
         return new Response(JSON.stringify({ success: true }), {
             headers: {
                 'Content-Type': 'application/json',
