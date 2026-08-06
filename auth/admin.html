@@ -18,7 +18,6 @@
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans h-screen flex">
 
-    <!-- Login Screen -->
     <div id="login-screen" class="fixed inset-0 bg-slate-900 flex items-center justify-center z-50">
         <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md text-center">
             <img src="/assets/logo.jpeg" class="w-20 h-20 mx-auto rounded-full mb-4">
@@ -30,7 +29,6 @@
         </div>
     </div>
 
-    <!-- Admin Dashboard -->
     <aside class="w-64 bg-[#111827] text-white flex flex-col hidden" id="sidebar">
         <div class="p-6 text-center border-b border-slate-700">
             <h2 class="text-xl font-black text-blue-400">IBIT ADMIN</h2>
@@ -50,7 +48,6 @@
             </button>
         </div>
 
-        <!-- Notice List View -->
         <div id="notice-list-view" class="bg-white rounded-lg shadow-sm border border-slate-200">
             <table class="w-full text-left border-collapse">
                 <thead>
@@ -61,12 +58,10 @@
                     </tr>
                 </thead>
                 <tbody id="admin-notices" class="divide-y divide-slate-100">
-                    <!-- Data will load here -->
-                </tbody>
+                    </tbody>
             </table>
         </div>
 
-        <!-- Add Notice Editor View -->
         <div id="notice-editor-view" class="hidden bg-white rounded-lg shadow-sm border border-slate-200 p-6">
             <input type="text" id="n-title" class="w-full px-4 py-3 border border-slate-300 rounded mb-4 text-lg font-bold focus:border-blue-500 focus:outline-none" placeholder="Enter Notice Title...">
             
@@ -78,21 +73,26 @@
                     </button>
                 </div>
                 
-                <!-- WordPress Style Editor -->
                 <div id="editor-container" class="h-64 bg-white"></div>
                 
-                <!-- Raw HTML Textarea (Hidden by default) -->
                 <textarea id="html-editor" class="hidden w-full h-72 p-4 border border-slate-300 rounded font-mono text-sm focus:border-blue-500 focus:outline-none bg-slate-50" placeholder="Paste your custom HTML code here..."></textarea>
             </div>
             
-            <!-- Auto Delete Timer -->
-            <div class="flex items-center gap-2 mb-6 bg-slate-50 p-4 border border-slate-200 rounded">
-                <input type="checkbox" id="auto-delete" class="w-4 h-4 cursor-pointer" onchange="document.getElementById('date-box').classList.toggle('hidden')">
-                <label for="auto-delete" class="font-bold text-sm text-slate-700 cursor-pointer">Enable Auto-Delete Timer</label>
-                <input type="date" id="date-box" class="hidden px-2 py-1 border border-slate-300 rounded text-sm ml-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 bg-slate-50 p-5 border border-slate-200 rounded-lg">
+                <div>
+                    <label class="font-bold text-sm text-slate-700 block mb-2">📎 Attach Original PDF (Optional)</label>
+                    <input type="file" id="pdf-upload" accept="application/pdf" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-bold file:bg-[#1a0b5e] file:text-white hover:file:bg-blue-800 transition cursor-pointer">
+                    <p class="text-xs text-slate-400 mt-1">If uploaded, users will download this PDF instead of generated one.</p>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2 mb-2">
+                        <input type="checkbox" id="auto-delete" class="w-4 h-4 cursor-pointer" onchange="document.getElementById('date-box').classList.toggle('hidden')">
+                        <label for="auto-delete" class="font-bold text-sm text-slate-700 cursor-pointer">Enable Auto-Delete (Date & Time)</label>
+                    </div>
+                    <input type="datetime-local" id="date-box" class="hidden w-full px-3 py-2 border border-slate-300 rounded text-sm focus:outline-none focus:border-blue-500 font-bold text-slate-700">
+                </div>
             </div>
 
-            <!-- Action Buttons -->
             <div class="flex justify-end gap-3">
                 <button onclick="hideEditor()" class="px-6 py-2 border border-slate-300 rounded font-bold hover:bg-slate-50 text-slate-600 transition">Cancel</button>
                 <button onclick="publishNotice()" id="publish-btn" class="px-6 py-2 bg-green-600 text-white rounded font-bold hover:bg-green-700 transition shadow">Publish Notice</button>
@@ -129,7 +129,7 @@
             const visualEditor = document.getElementById('editor-container');
 
             if (isHtmlMode) {
-                htmlEditor.value = quill.root.innerHTML; // Copy to HTML
+                htmlEditor.value = quill.root.innerHTML; 
                 toolbar.style.display = 'none';
                 visualEditor.style.display = 'none';
                 htmlEditor.classList.remove('hidden');
@@ -137,7 +137,7 @@
                 this.classList.replace('bg-slate-200', 'bg-blue-600');
                 this.classList.replace('text-slate-700', 'text-white');
             } else {
-                quill.root.innerHTML = htmlEditor.value; // Copy back to Visual
+                quill.root.innerHTML = htmlEditor.value; 
                 toolbar.style.display = 'block';
                 visualEditor.style.display = 'block';
                 htmlEditor.classList.add('hidden');
@@ -187,6 +187,10 @@
             document.getElementById('n-title').value = '';
             quill.root.innerHTML = '';
             document.getElementById('html-editor').value = '';
+            document.getElementById('pdf-upload').value = '';
+            document.getElementById('auto-delete').checked = false;
+            document.getElementById('date-box').classList.add('hidden');
+            document.getElementById('date-box').value = '';
         }
 
         // Fetch Notices
@@ -217,29 +221,56 @@
             }
         }
 
-        // Publish Notice API
+        // 🔥 Publish Notice API (Handles File Upload & DateTime) 🔥
         async function publishNotice() {
             const title = document.getElementById('n-title').value;
             if(!title) { alert('Notice title is required!'); return; }
 
             let content = isHtmlMode ? document.getElementById('html-editor').value : quill.root.innerHTML;
-            const autoDel = document.getElementById('auto-delete').checked ? document.getElementById('date-box').value : null;
+            
+            // Get DateTime standard format
+            let autoDel = null;
+            if(document.getElementById('auto-delete').checked) {
+                const dateVal = document.getElementById('date-box').value;
+                if(dateVal) autoDel = new Date(dateVal).toISOString();
+            }
 
             const btn = document.getElementById('publish-btn');
-            btn.innerText = "Publishing...";
+            btn.innerText = "Processing...";
 
             try {
+                let pdf_url = null;
+                const fileInput = document.getElementById('pdf-upload');
+                
+                // Upload PDF to R2 if selected
+                if(fileInput.files.length > 0) {
+                    btn.innerText = "Uploading PDF...";
+                    const formData = new FormData();
+                    formData.append('file', fileInput.files[0]);
+                    
+                    const upRes = await fetch('/api/upload', { method: 'POST', body: formData });
+                    
+                    if(!upRes.ok) {
+                        alert("PDF Upload failed! Check your R2 Binding in Cloudflare.");
+                        btn.innerText = "Publish Notice";
+                        return;
+                    }
+                    const upData = await upRes.json();
+                    pdf_url = upData.file_url;
+                }
+
+                btn.innerText = "Saving to Database...";
                 const res = await fetch('/api/notices', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ title, content, auto_delete_date: autoDel })
+                    body: JSON.stringify({ title, content, auto_delete_date: autoDel, pdf_url })
                 });
                 
                 if(res.ok) {
                     hideEditor();
                     loadNotices();
                 } else {
-                    alert('Failed to publish notice. Authentication error.');
+                    alert('Failed to publish notice. Database error.');
                 }
             } catch(e) {
                 alert('Connection Error!');
@@ -256,4 +287,4 @@
         }
     </script>
 </body>
-</html>s
+</html>
