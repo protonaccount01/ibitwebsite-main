@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IBIT - Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans h-screen flex">
+
+    <!-- 🔴 Login Screen 🔴 -->
+    <div id="login-screen" class="fixed inset-0 bg-slate-900 flex items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md text-center">
+            <img src="/assets/logo.jpeg" class="w-20 h-20 mx-auto rounded-full mb-4">
+            <h2 class="text-2xl font-black text-[#1a0b5e] mb-6 uppercase">Admin Login</h2>
+            <input type="text" id="username" placeholder="Username" class="w-full px-4 py-3 border rounded mb-4 focus:outline-none focus:border-blue-500">
+            <input type="password" id="password" placeholder="Password" class="w-full px-4 py-3 border rounded mb-6 focus:outline-none focus:border-blue-500">
+            <button onclick="login()" class="w-full bg-[#1a0b5e] text-white py-3 rounded font-bold hover:bg-blue-800 transition">LOGIN</button>
+            <p id="login-error" class="text-red-500 mt-3 font-bold hidden">Invalid ID or Password!</p>
+        </div>
+    </div>
+
+    <!-- 🟢 Admin Dashboard 🟢 -->
+    <aside class="w-64 bg-[#111827] text-white flex flex-col hidden" id="sidebar">
+        <div class="p-6 text-center border-b border-slate-700">
+            <h2 class="text-xl font-black text-blue-400">IBIT ADMIN</h2>
+        </div>
+        <nav class="flex-grow p-4 space-y-2">
+            <a href="#" class="block px-4 py-3 bg-blue-600 rounded text-sm font-bold">📢 Notice Panel</a>
+            <a href="#" class="block px-4 py-3 hover:bg-slate-800 rounded text-sm font-bold text-slate-400 transition">⚙️ Future Feature</a>
+        </nav>
+        <div class="p-4"><button onclick="logout()" class="w-full text-red-400 font-bold hover:text-red-300 text-sm">Logout</button></div>
+    </aside>
+
+    <main class="flex-grow p-8 overflow-y-auto hidden" id="main-content">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-slate-800" id="page-title">Notice Management</h1>
+            <button onclick="showEditor()" id="add-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded font-bold transition shadow">
+                + Add New Notice
+            </button>
+        </div>
+
+        <!-- Notice List -->
+        <div id="notice-list-view" class="bg-white rounded-lg shadow-sm border border-slate-200">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50 text-slate-500 text-sm uppercase border-b border-slate-200">
+                        <th class="p-4 font-bold">Title</th>
+                        <th class="p-4 font-bold w-32">Date</th>
+                        <th class="p-4 font-bold w-16 text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-notices" class="divide-y divide-slate-100">
+                    <!-- Notices will load here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Add Notice Editor -->
+        <div id="notice-editor-view" class="hidden bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+            <input type="text" id="n-title" class="w-full px-4 py-2 border rounded mb-4 text-lg font-semibold" placeholder="Notice Title">
+            <div id="editor-container" class="h-64 mb-4"></div>
+            
+            <div class="flex items-center gap-2 mb-6 bg-slate-50 p-4 border rounded">
+                <input type="checkbox" id="auto-delete" onchange="document.getElementById('date-box').classList.toggle('hidden')">
+                <label class="font-bold text-sm">Auto-Delete Timer</label>
+                <input type="date" id="date-box" class="hidden px-2 py-1 border rounded text-sm ml-4">
+            </div>
+
+            <div class="flex justify-end gap-3">
+                <button onclick="hideEditor()" class="px-6 py-2 border rounded font-bold hover:bg-slate-50">Cancel</button>
+                <button onclick="publishNotice()" class="px-6 py-2 bg-green-600 text-white rounded font-bold hover:bg-green-700">Publish</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script>
+        // Check if cookie exists (basic check, server does real auth)
+        if(document.cookie.includes('admin_auth=true')) {
+            showDashboard();
+        }
+
+        var quill = new Quill('#editor-container', {
+            theme: 'snow',
+            modules: { toolbar: [ [{ 'header': [1,2,3,false] }], ['bold', 'italic', 'underline'], [{'color':[]}], [{ 'list': 'ordered'}, { 'list': 'bullet' }], ['link', 'clean'] ] }
+        });
+
+        async function login() {
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+            const res = await fetch('/api/auth', { method: 'POST', body: JSON.stringify({username: u, password: p}) });
+            if(res.ok) { showDashboard(); } else { document.getElementById('login-error').classList.remove('hidden'); }
+        }
+
+        function logout() {
+            document.cookie = "admin_auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            location.reload();
+        }
+
+        function showDashboard() {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('sidebar').classList.remove('hidden');
+            document.getElementById('main-content').classList.remove('hidden');
+            loadNotices();
+        }
+
+        function showEditor() {
+            document.getElementById('notice-list-view').classList.add('hidden');
+            document.getElementById('notice-editor-view').classList.remove('hidden');
+            document.getElementById('add-btn').classList.add('hidden');
+            document.getElementById('page-title').innerText = "Create Notice";
+        }
+
+        function hideEditor() {
+            document.getElementById('notice-list-view').classList.remove('hidden');
+            document.getElementById('notice-editor-view').classList.add('hidden');
+            document.getElementById('add-btn').classList.remove('hidden');
+            document.getElementById('page-title').innerText = "Notice Management";
+            document.getElementById('n-title').value = '';
+            quill.root.innerHTML = '';
+        }
+
+        async function loadNotices() {
+            const res = await fetch('/api/notices');
+            const data = await res.json();
+            const tbody = document.getElementById('admin-notices');
+            tbody.innerHTML = '';
+            data.forEach(n => {
+                const date = new Date(n.created_at).toLocaleDateString();
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-50">
+                        <td class="p-4 font-semibold">${n.title}</td>
+                        <td class="p-4 text-sm">${date}</td>
+                        <td class="p-4 text-center">
+                            <button onclick="deleteNotice(${n.id})" class="text-red-500 font-bold hover:underline">Delete</button>
+                        </td>
+                    </tr>`;
+            });
+        }
+
+        async function publishNotice() {
+            const title = document.getElementById('n-title').value;
+            const content = quill.root.innerHTML;
+            const autoDel = document.getElementById('auto-delete').checked ? document.getElementById('date-box').value : null;
+
+            await fetch('/api/notices', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, content, auto_delete_date: autoDel })
+            });
+            hideEditor();
+            loadNotices();
+        }
+
+        async function deleteNotice(id) {
+            if(confirm("Are you sure?")) {
+                await fetch('/api/notices?id=' + id, { method: 'DELETE' });
+                loadNotices();
+            }
+        }
+    </script>
+</body>
+</html>
