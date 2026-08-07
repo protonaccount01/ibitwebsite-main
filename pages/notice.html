@@ -15,7 +15,6 @@
 
     <main class="w-full flex-grow py-12 bg-slate-50">
         <div class="max-w-5xl mx-auto px-4" data-aos="fade-up" data-aos-duration="1000">
-            
             <div class="text-center mb-10">
                 <h1 class="text-3xl font-black text-[#1a0b5e] uppercase tracking-wider mb-2">Notice Board</h1>
                 <div class="w-24 h-1 bg-[#1a0b5e] mx-auto rounded-full"></div>
@@ -31,7 +30,6 @@
                     <div class="p-8 text-center text-slate-400 font-semibold">Loading all notices from database...</div>
                 </div>
             </div>
-
         </div>
     </main>
 
@@ -41,10 +39,9 @@
                 <h2 id="modal-title" class="text-xl font-bold text-[#1a0b5e]"></h2>
                 <button onclick="closeModal()" class="text-slate-400 hover:text-red-500 font-bold text-3xl leading-none">&times;</button>
             </div>
-            <div id="modal-content" class="p-6 overflow-y-auto prose max-w-none text-slate-700 text-justify">
-                </div>
+            <div id="modal-content" class="p-6 overflow-y-auto prose max-w-none text-slate-700 text-justify"></div>
             <div class="p-4 border-t border-slate-200 bg-slate-50 flex justify-end">
-                <button onclick="closeModal()" class="px-5 py-2 bg-slate-200 text-slate-700 rounded font-bold hover:bg-slate-300 transition">Close</button>
+                <button onclick="closeModal()" class="px-5 py-2 bg-[#1a0b5e] text-white rounded font-bold hover:bg-blue-900 transition">Close</button>
             </div>
         </div>
     </div>
@@ -55,30 +52,19 @@
     <script>
         AOS.init({ once: true, offset: 50, easing: 'ease-in-out' });
 
-        // Load Header
         fetch('/header.html')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('header-placeholder').innerHTML = data;
                 const mobileBtn = document.getElementById('mobile-btn');
                 const mobileMenu = document.getElementById('mobile-menu');
-                if(mobileBtn) {
-                    mobileBtn.addEventListener('click', () => {
-                        mobileMenu.classList.toggle('hidden');
-                    });
-                }
-            })
-            .catch(error => console.error('Error loading header:', error));
+                if(mobileBtn) mobileBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+            });
 
-        // Load Footer
         fetch('/footer.html')
             .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer-placeholder').innerHTML = data;
-            })
-            .catch(error => console.error('Error loading footer:', error));
+            .then(data => document.getElementById('footer-placeholder').innerHTML = data);
 
-        // Fetch Notices
         fetch('/api/notices')
             .then(res => res.json())
             .then(data => {
@@ -93,12 +79,17 @@
                 data.forEach(n => {
                     const dateObj = new Date(n.created_at);
                     const formattedDate = dateObj.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-                    const safeTitle = n.title.replace(/'/g, "\\'").replace(/"/g, '&quot;');
-                    const encodedContent = encodeURIComponent(n.content);
                     
-                    // Unified PDF Button (Original PDF or Generated PDF)
+                    const safeTitle = n.title.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                    const safeFilename = n.title.replace(/[^a-zA-Z0-9]/g, '_');
+                    
+                    // 🔴 বাগ ফিক্স: ডাটাবেস থেকে আসার সময় Single Quote কে %27 বানিয়ে দেওয়া হলো 🔴
+                    const encodedContent = encodeURIComponent(n.content || '').replace(/'/g, "%27");
+                    
+                    const finalPdfUrl = n.pdf_url ? `${n.pdf_url}?title=${encodeURIComponent(safeFilename)}` : '#';
+
                     const pdfButton = n.pdf_url 
-                        ? `<a href="${n.pdf_url}" target="_blank" onclick="event.stopPropagation();" class="shrink-0 flex items-center gap-1.5 bg-[#1a0b5e] hover:bg-blue-800 text-white px-3 py-1.5 rounded text-xs font-bold transition shadow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> PDF</a>`
+                        ? `<a href="${finalPdfUrl}" onclick="event.stopPropagation();" class="shrink-0 flex items-center gap-1.5 bg-[#1a0b5e] hover:bg-blue-800 text-white px-3 py-1.5 rounded text-xs font-bold transition shadow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> PDF</a>`
                         : `<button onclick="event.stopPropagation(); downloadPDF('${safeTitle}', '${encodedContent}', '${formattedDate}')" class="shrink-0 flex items-center gap-1.5 bg-[#1a0b5e] hover:bg-blue-800 text-white px-3 py-1.5 rounded text-xs font-bold transition shadow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> PDF</button>`;
 
                     container.innerHTML += `
@@ -109,15 +100,11 @@
                                 </div>
                                 <div>
                                     <span class="sm:hidden text-xs font-bold text-slate-500 mb-1 block">Published: ${formattedDate}</span>
-                                    <h3 class="text-slate-800 font-bold text-[15px] group-hover:text-blue-700 transition leading-snug">
-                                        ${n.title}
-                                    </h3>
+                                    <h3 class="text-slate-800 font-bold text-[15px] group-hover:text-blue-700 transition leading-snug underline decoration-slate-300 group-hover:decoration-blue-600 underline-offset-4">${n.title}</h3>
                                 </div>
                             </div>
                             <div class="flex items-center justify-between sm:justify-end sm:w-64 gap-4">
-                                <span class="hidden sm:inline-block bg-blue-50 text-blue-700 font-bold text-xs px-3 py-1.5 rounded-full border border-blue-100 whitespace-nowrap">
-                                    ${formattedDate}
-                                </span>
+                                <span class="hidden sm:inline-block bg-blue-50 text-blue-700 font-bold text-xs px-3 py-1.5 rounded-full border border-blue-100 whitespace-nowrap">${formattedDate}</span>
                                 ${pdfButton}
                             </div>
                         </div>
@@ -127,44 +114,33 @@
                 document.getElementById('public-notice-list').innerHTML = '<div class="p-8 text-center text-red-500 font-bold">Unable to load notices.</div>';
             });
 
-        // Modal Logic
         function openModal(title, encodedContent) {
             document.getElementById('modal-title').innerText = title;
-            document.getElementById('modal-content').innerHTML = decodeURIComponent(encodedContent);
+            
+            // 🔴 কন্টেন্ট ব্ল্যাঙ্ক থাকলে কাস্টম মেসেজ 🔴
+            let htmlStr = decodeURIComponent(encodedContent);
+            if (!htmlStr || htmlStr.trim() === '' || htmlStr === 'null') {
+                htmlStr = '<div class="text-center py-10 bg-slate-50 rounded border border-dashed border-slate-300 text-slate-500 font-bold"><svg class="mx-auto mb-2 text-slate-400" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>Document Attached.<br><span class="text-sm font-normal">Please click the PDF button on the right to view or download the full notice.</span></div>';
+            }
+            
+            document.getElementById('modal-content').innerHTML = htmlStr;
             document.getElementById('notice-modal').classList.remove('hidden');
         }
 
-        function closeModal() {
-            document.getElementById('notice-modal').classList.add('hidden');
-        }
+        function closeModal() { document.getElementById('notice-modal').classList.add('hidden'); }
 
-        // Bulletproof PDF Download Logic
         function downloadPDF(title, encodedContent, date) {
-            // HTML String for PDF Generation
             const pdfContent = `
-                <div style="padding: 40px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #0f172a; max-width: 800px; margin: 0 auto;">
-                    <div style="text-align: center; border-bottom: 2px solid #1e293b; padding-bottom: 20px; margin-bottom: 30px;">
-                        <h1 style="font-size: 24px; font-weight: 900; margin: 0; text-transform: uppercase; color: #1e293b;">IBIT - Islami Bank Institute of Technology, Sylhet</h1>
-                        <h3 style="font-size: 20px; font-weight: 700; margin: 15px 0 5px 0; color: #334155;">${title}</h3>
-                        <p style="font-size: 14px; font-weight: 600; color: #64748b; margin: 0;">Published on: ${date}</p>
+                <div style="padding:40px; font-family:sans-serif; color:#0f172a;">
+                    <div style="text-align:center; border-bottom:2px solid #1e293b; padding-bottom:20px; margin-bottom:30px;">
+                        <h1 style="font-size:24px; font-weight:900; margin:0; text-transform:uppercase;">IBIT Sylhet</h1>
+                        <h3 style="font-size:20px; font-weight:700; margin:15px 0 5px 0;">${title}</h3>
+                        <p style="font-size:14px; font-weight:600; color:#64748b; margin:0;">Published on: ${date}</p>
                     </div>
-                    <div style="font-size: 16px; text-align: justify; line-height: 1.6; color: #334155;">
-                        ${decodeURIComponent(encodedContent)}
-                    </div>
-                    <div style="margin-top: 50px; font-size: 12px; text-align: center; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 20px;">
-                        Generated by IBIT Admin Portal &copy; ${new Date().getFullYear()}
-                    </div>
-                </div>
-            `;
-
-            var opt = {
-                margin:       0,
-                filename:     title.substring(0, 30).replace(/[^a-zA-Z0-9]/g, '_') + '_Notice.pdf',
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true },
-                jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
-            };
-
+                    <div style="font-size:16px; text-align:justify; line-height:1.6;">${decodeURIComponent(encodedContent)}</div>
+                </div>`;
+            const filename = title.replace(/[^a-zA-Z0-9]/g, '_') + '.pdf';
+            const opt = { margin: 0, filename: filename, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } };
             html2pdf().set(opt).from(pdfContent).save();
         }
     </script>
