@@ -18,7 +18,6 @@
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans h-screen flex flex-col" onclick="closeAllDropdowns()">
 
-    <!-- Header (With Logo) -->
     <header class="bg-[#1a0b5e] text-white py-4 px-6 shadow-md z-20 flex justify-between items-center hidden" id="top-header">
         <div class="flex items-center gap-4">
             <img src="/assets/logo.jpeg" class="w-10 h-10 rounded-full border-2 border-white shadow-sm" alt="IBIT Logo" onerror="this.src='https://via.placeholder.com/40'">
@@ -27,10 +26,8 @@
                 <p class="text-xs text-blue-200">Admin Control Panel</p>
             </div>
         </div>
-        <button type="button" onclick="logout()" class="text-sm font-bold bg-white text-[#1a0b5e] px-4 py-2 rounded hover:bg-slate-200 transition shadow">Logout</button>
     </header>
 
-    <!-- Login Screen -->
     <div id="login-screen" class="fixed inset-0 bg-slate-900 flex items-center justify-center z-50">
         <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md text-center relative">
             <img src="/assets/logo.jpeg" class="w-24 h-24 mx-auto rounded-full mb-4 border-4 border-slate-100 shadow-sm" alt="Logo" onerror="this.src='https://via.placeholder.com/100'">
@@ -40,29 +37,42 @@
             
             <div class="relative mb-6">
                 <input type="password" id="password" placeholder="Password" class="w-full px-4 py-3 border border-slate-300 rounded focus:outline-none focus:ring-2 focus:ring-[#1a0b5e]">
-                <!-- Type changed to button so it doesn't submit form/reload -->
                 <button type="button" onclick="togglePassword()" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-[#1a0b5e] focus:outline-none" title="Show/Hide Password">
                     <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>
                     </svg>
                 </button>
             </div>
-            
             <button type="button" onclick="login()" id="login-btn" class="w-full bg-[#1a0b5e] text-white py-3 rounded font-bold hover:bg-blue-900 transition shadow-lg">LOGIN</button>
             <p id="login-error" class="text-red-500 mt-3 font-bold hidden">Invalid ID or Password</p>
         </div>
     </div>
 
     <div class="flex flex-grow overflow-hidden">
-        <!-- Sidebar -->
-        <aside class="w-64 bg-slate-900 text-white flex flex-col hidden shadow-xl z-10" id="sidebar">
-            <nav class="flex-grow p-4 space-y-2 mt-4">
+        <aside class="w-64 bg-slate-900 text-white flex flex-col hidden shadow-xl z-10 justify-between" id="sidebar">
+            <nav class="p-4 space-y-2 mt-4">
                 <button type="button" onclick="showDashboard()" id="nav-dash" class="w-full text-left px-4 py-3 rounded text-sm font-bold bg-blue-700 text-white transition shadow">Dashboard</button>
-                <button type="button" onclick="showNoticePanel()" id="nav-notice" class="w-full text-left px-4 py-3 hover:bg-slate-800 rounded text-sm font-bold text-slate-300 transition">Notice Board</button>
+                
+                <div>
+                    <button type="button" onclick="toggleMenu('notice-submenu')" class="w-full text-left px-4 py-3 rounded text-sm font-bold text-slate-300 hover:bg-slate-800 transition flex justify-between items-center">
+                        Notice Board
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="notice-submenu" class="hidden flex-col ml-2 mt-1 space-y-1 border-l-2 border-slate-700 pl-2">
+                        <button type="button" onclick="showNoticePanel()" class="w-full text-left px-4 py-2 rounded text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition">All Notices</button>
+                        <button type="button" onclick="showEditor()" class="w-full text-left px-4 py-2 rounded text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition">Create Notice</button>
+                    </div>
+                </div>
             </nav>
+
+            <div class="p-4 border-t border-slate-800">
+                <button type="button" onclick="logout()" class="w-full flex justify-center items-center gap-2 text-red-400 font-bold hover:text-red-300 hover:bg-slate-800 py-3 rounded transition">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    Logout
+                </button>
+            </div>
         </aside>
 
-        <!-- Main Content -->
         <main class="flex-grow p-8 overflow-y-auto hidden bg-slate-50" id="main-content">
             
             <div id="dashboard-view">
@@ -76,7 +86,8 @@
                 <div class="flex justify-between items-center mb-6">
                     <h1 class="text-2xl font-bold text-slate-800">Notice Management</h1>
                     <button type="button" onclick="showEditor()" class="bg-[#1a0b5e] hover:bg-blue-900 text-white px-5 py-2.5 rounded font-bold transition shadow text-sm flex items-center gap-2">
-                        <span>+</span> Create Notice
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        Create Notice
                     </button>
                 </div>
 
@@ -94,9 +105,15 @@
                 </div>
             </div>
 
-            <!-- Create/Edit Notice View -->
             <div id="notice-editor-view" class="hidden bg-white rounded-xl shadow-sm border border-slate-200 p-8 max-w-5xl mx-auto">
-                <h2 id="editor-title" class="text-2xl font-black text-[#1a0b5e] mb-6 border-b border-slate-100 pb-4 uppercase">Create Notice</h2>
+                <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
+                    <h2 id="editor-title" class="text-2xl font-black text-[#1a0b5e] uppercase">Create Notice</h2>
+                    <button type="button" onclick="previewNotice()" class="px-5 py-2 bg-blue-50 text-blue-800 border border-blue-200 rounded font-bold hover:bg-blue-100 transition flex items-center gap-2 shadow-sm text-sm">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        Preview
+                    </button>
+                </div>
+
                 <input type="hidden" id="edit-id">
                 
                 <label class="font-bold text-slate-700 text-sm mb-1 block">Notice Title</label>
@@ -122,7 +139,6 @@
                     <input type="file" id="pdf-upload" accept="application/pdf" class="mx-auto text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-bold file:bg-[#1a0b5e] file:text-white hover:file:bg-blue-800 transition cursor-pointer">
                 </div>
 
-                <!-- Timer Section -->
                 <div class="bg-blue-50 p-5 border border-blue-100 rounded-lg mb-8">
                     <div class="flex items-center gap-2">
                         <input type="checkbox" id="auto-delete" class="w-4 h-4 cursor-pointer" onchange="document.getElementById('editor-timer-box').classList.toggle('hidden')">
@@ -152,9 +168,6 @@
                 </div>
 
                 <div class="flex justify-end gap-3 pt-4 border-t border-slate-100">
-                    <button type="button" onclick="previewNotice()" class="px-6 py-3 bg-blue-100 text-blue-800 border border-blue-200 rounded font-bold hover:bg-blue-200 transition flex items-center gap-2 shadow-sm">
-                        👁️ Preview
-                    </button>
                     <button type="button" onclick="showNoticePanel()" class="px-8 py-3 border border-slate-300 rounded font-bold hover:bg-slate-100 text-slate-600 transition">Cancel</button>
                     <button type="button" onclick="saveNotice()" id="publish-btn" class="px-8 py-3 bg-green-600 text-white rounded font-bold hover:bg-green-700 transition shadow-lg">Publish Notice</button>
                 </div>
@@ -162,7 +175,6 @@
         </main>
     </div>
 
-    <!-- Live Preview Modal -->
     <div id="preview-modal" class="hidden fixed inset-0 bg-slate-900 bg-opacity-70 z-[100] flex items-center justify-center p-4">
         <div class="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col relative overflow-hidden">
             <div class="bg-slate-100 p-5 border-b border-slate-200 flex justify-between items-center">
@@ -173,15 +185,13 @@
                 <button type="button" onclick="closePreview()" class="text-slate-400 hover:text-red-500 font-bold text-3xl leading-none">&times;</button>
             </div>
             <div id="preview-content" class="p-6 overflow-y-auto prose max-w-none text-slate-700 text-justify">
-                <!-- Content injected here -->
-            </div>
+                </div>
             <div class="p-4 border-t border-slate-200 bg-slate-50 flex justify-end">
                 <button type="button" onclick="closePreview()" class="px-6 py-2 bg-[#1a0b5e] text-white rounded font-bold hover:bg-blue-900 transition shadow">Close</button>
             </div>
         </div>
     </div>
 
-    <!-- Delete Modal -->
     <div id="delete-modal" class="hidden fixed inset-0 bg-slate-900 bg-opacity-60 z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-sm text-center">
             <h3 class="text-xl font-bold text-slate-800 mb-2">Delete Notice?</h3>
@@ -194,7 +204,6 @@
         </div>
     </div>
 
-    <!-- Quick Timer Modal -->
     <div id="timer-modal" class="hidden fixed inset-0 bg-slate-900 bg-opacity-60 z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-sm border-t-4 border-[#1a0b5e]">
             <h3 class="text-lg font-bold text-[#1a0b5e] mb-1">Set Auto-Delete Timer</h3>
@@ -231,9 +240,7 @@
         </div>
     </div>
 
-    <!-- 🔥 Missing script added here! 🔥 -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-
     <script>
         let noticeData = [];
         let currentFormat = 'visual';
@@ -248,6 +255,10 @@
 
         function toggleAMPM(btn) {
             btn.innerText = btn.innerText === 'AM' ? 'PM' : 'AM';
+        }
+
+        function toggleMenu(id) {
+            document.getElementById(id).classList.toggle('hidden');
         }
 
         function getTimerISO(prefix) {
@@ -340,7 +351,7 @@
             } else if (currentFormat === 'html') {
                 content = document.getElementById('html-editor').value;
             } else if (currentFormat === 'pdf') {
-                content = '<div class="text-center py-10 bg-slate-50 rounded border border-dashed border-slate-300 text-slate-500 font-bold">📄 PDF File Selected.<br><span class="text-sm font-normal">Preview is not available for raw PDF uploads.</span></div>';
+                content = '<div class="text-center py-10 bg-slate-50 rounded border border-dashed border-slate-300 text-slate-500 font-bold"><svg class="mx-auto mb-2 text-slate-400" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>PDF File Selected.<br><span class="text-sm font-normal">Preview is not available for raw PDF uploads.</span></div>';
             }
 
             document.getElementById('preview-title').innerText = title;
@@ -348,9 +359,7 @@
             document.getElementById('preview-modal').classList.remove('hidden');
         }
 
-        function closePreview() {
-            document.getElementById('preview-modal').classList.add('hidden');
-        }
+        function closePreview() { document.getElementById('preview-modal').classList.add('hidden'); }
 
         async function login() {
             const btn = document.getElementById('login-btn');
@@ -374,21 +383,13 @@
             fetchNotices();
         }
 
-        function setActiveNav(id) {
-            document.getElementById('nav-dash').className = "w-full text-left px-4 py-3 rounded text-sm font-bold transition hover:bg-slate-800 text-slate-300";
-            document.getElementById('nav-notice').className = "w-full text-left px-4 py-3 rounded text-sm font-bold transition hover:bg-slate-800 text-slate-300";
-            document.getElementById(id).className = "w-full text-left px-4 py-3 rounded text-sm font-bold bg-blue-700 text-white transition shadow";
-        }
-
         function showDashboard() {
-            setActiveNav('nav-dash');
             document.getElementById('dashboard-view').classList.remove('hidden');
             document.getElementById('notice-panel-view').classList.add('hidden');
             document.getElementById('notice-editor-view').classList.add('hidden');
         }
 
         function showNoticePanel() {
-            setActiveNav('nav-notice');
             document.getElementById('dashboard-view').classList.add('hidden');
             document.getElementById('notice-panel-view').classList.remove('hidden');
             document.getElementById('notice-editor-view').classList.add('hidden');
@@ -542,9 +543,7 @@
             document.getElementById('timer-modal').classList.remove('hidden');
         }
 
-        function clearQuickTimer() {
-            setTimerUI('qt', null);
-        }
+        function clearQuickTimer() { setTimerUI('qt', null); }
 
         async function saveQuickTimer() {
             const id = document.getElementById('timer-id').value;
